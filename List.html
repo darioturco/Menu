@@ -1,0 +1,356 @@
+<!DOCTYPE html><html>
+<head>
+  <title>List</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var pri = [{}];
+  var item = [], linea = [];
+  var contenedor_linea, contenedor_dibujo;
+  var selec = -1;
+  function new_() {
+    pri.push({});
+    if(selec == -1){//si no esta ninguno seleccionado se agrega un objeto nuevo con las propiedades de las lineas
+      for(let i=0 ; i<linea.length ; i++){
+        if(linea[i].name.value != ""){
+          pri[pri.length-1][linea[i].name.value] = linea[i].value.value;
+        }
+      }
+    }
+    if(pri.length > item.length){
+      let nuevo_item = item[0].cloneNode(true);
+      item.push(nuevo_item);//crea un nuevo item
+      nuevo_item.style.display = "inline-block";
+      nuevo_item.id = (item.length-1).toString();
+      nuevo_item.className = "item";
+      escribe_propiedades(pri.length-1);
+      contenedor_dibujo.appendChild(nuevo_item);
+    }else{
+      for(let i=0 ; i<item.length ; i++){//enciede el primer item apagado
+        if(item[i].style.display == "none"){
+          item[i].style.display = "inline-block";
+          item[i].innerHTML = "";
+          escribe_propiedades(i);
+          break;
+        }
+      }
+    }
+  }
+  function escribe_propiedades(num){
+    item[num].innerHTML = "";
+    for(prop in pri[num]){
+      item[num].innerHTML += prop+": "+pri[num][prop]+"<br />";
+    }
+  }
+  function delete_() {
+    if(pri.length > 0){
+      pri.pop();
+      for(let i=item.length-1 ; i>=0 ; i--){
+        if(item[i].style.display != "none"){
+          item[i].style.display = "none";
+          break;
+        }
+      }
+    }
+  }
+  function selecciona(div) {
+    if(selec == div.id){//deselecciona
+      div.className = "item";
+      selec = -1;
+      crea_linea(0);
+    }else{//selecciona
+      if(selec >= 0){
+        contenedor_dibujo.childNodes[selec].className = "item";
+      }
+      selec = parseInt(div.id);
+      div.className = "item-sel";
+      crea_linea(cantidad_propiedades(pri[selec]));
+    }
+  }
+  function crea_linea(cant){//se le pasa cuantas lineas se necesitan ver y las agrga o elimina
+    let fin = 0;
+    if(linea.length > cant){//se eliminan
+      fin = linea.length - cant;
+      for(let i=linea.length, c=0; i>1 ; i--){
+        c++;
+        if(c > fin){
+          break;
+        }
+        close_linea(linea[linea.length-1].div.lastElementChild, true);
+      }
+      if(cant == 0){
+        clear_linea(linea[linea.length-1]);
+      }else{
+        if(linea[linea.length-1].name.disabled == true){
+          crea_una_lista_mas();
+        }
+      }
+    }else{//se crean
+      fin = cant - linea.length;
+      for(let i=0 ; i<fin+1 ; i++){
+        crea_una_lista_mas();
+      }
+    }
+    let c = 0;
+    for(pro in pri[selec]){
+      linea[c].name.value = pro;
+      linea[c].value.value = pri[selec][pro];
+      linea[c].name.disabled = true;
+      c++;
+    }
+  }
+  function crea_una_lista_mas(){
+    let nueva_linea = linea[0].div.cloneNode(true);
+    set_linea(nueva_linea,linea.length);
+    let lin = linea[linea.length-1];
+    clear_linea(lin);
+    contenedor_linea.appendChild(nueva_linea);
+    return lin;
+  }
+  function set_linea(lin, num){
+    linea.push({
+      div: lin,
+      name: lin.childNodes[1],
+      value: lin.childNodes[3]
+    });
+    let id = 0;
+    if(num != 0){
+      id = parseInt(linea[linea.length-2].div.id)+1;
+    }// el id va a ser 1 + que el anteultimo item
+    set_id(linea[num],id);
+  }
+  function set_id(lin,num){
+    lin.div.id = num;
+    lin.name.id = num;
+    lin.value.id = num;
+  }
+  function clear_linea(lin){
+    lin.name.value = "";
+    lin.value.value = "";
+    lin.name.disabled = false;
+  }
+  function cambia_nombre(div) {
+      if(div.value != ""){
+        div.disabled = true;
+        if(div.id == linea[linea.length-1].div.id){
+          crea_una_lista_mas();
+        }
+        if(selec != -1){
+          let num = get_position(div.parentNode.id);
+          pri[selec][linea[num].name.value] = linea[num].value.value;//escibe el valor
+          escribe_propiedades(selec);
+        }
+      }
+  }
+  function cambia_valor(div) {
+    num = get_position(div.parentNode.id);
+    if(selec != -1 && linea[num].name.value != ""){
+      pri[selec][linea[num].name.value] = div.value;//escibe el valor
+      escribe_propiedades(selec);
+    }
+  }
+  function close_linea(lin,sup = false) {
+    num = get_position(lin.parentNode.id);
+    if(linea[num].name.value != "" || sup == true){
+      if(selec != -1){
+        delete pri[selec][linea[num].name.value];//elimina el valor
+      }
+      contenedor_linea.removeChild(linea[num].div);//elimina el elemento nodo
+      linea.splice(num,1);//elimina el objeto de la lista
+      if(sup == false){
+        escribe_propiedades(selec);
+      }
+    }
+  }
+  function calcula_ultima_linea(){
+    for(let i=linea.length-1 ; i>=0 ; i--){
+      if(linea[i].div.style.display != "none"){
+        return linea[i].div.id;
+      }
+    }
+    return linea.length-1;
+  }
+  function get_position(num){
+    for(let i=0; i<linea.length ; i++){
+      if(num == linea[i].div.id){
+        return i;
+      }
+    }
+  }
+  function cantidad_propiedades(obj){
+    let cont = 0;
+    for(pro in obj){
+      cont++;
+    }
+    return cont;
+  }
+  setTimeout(() => {
+    contenedor_linea = document.getElementById("contenedor-linea");
+    contenedor_dibujo = document.getElementById("dibujo");
+    contenedor_dibujo.removeChild(contenedor_dibujo.childNodes[0]);//saca la basura
+    contenedor_dibujo.removeChild(contenedor_dibujo.childNodes[1]);//saca la basura
+    item.push(document.getElementById("0"));
+    set_linea(document.getElementById("linea"),0);
+    item[0].style.display = "inline-block";
+    linea[0].div.style.display = "flex";
+  },50);
+  </script>
+  <style>
+  #contenido {
+    margin: 25px auto;
+    width: 70%;
+    height: 400px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background: #DDFFFB;
+    border-radius: 12px 12px 0 0;
+  }
+  #contenido > h2 {
+    margin: 20px 0;
+    width: 50%;
+    height: 5%;
+    text-align: center;
+  }
+  #contenedor-linea {
+    background: #7BFFD4;
+    margin: 0;
+    padding: 5px 0;
+    width: 100%;
+    height: 85%;
+    border-radius: 12px 12px 0 0;
+    overflow-y: scroll;
+  }
+  .linea {
+    background: #A37BFF;
+    width: 100%;
+    height: 30px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    border: 2px solid #6C2CFF;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .linea > input {
+    margin: auto;
+    width: 170px;
+    height: 20px;
+  }
+  .linea > #close {
+    position: absolute;
+    left: 95%;
+    top: 17%;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    background: #AF009C;
+    border: 2px solid #5D0053;
+    border-radius: 5px;
+    transition: 0.5s;
+  }
+  .linea > #close:hover {
+    background: #CD0B2E;
+    border: 2px solid #17010C;
+  }
+  #contenedor-botones {
+    background: #55B696;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 0 0 12px 12px;
+  }
+  #contenedor-botones > input {
+    width: 65px;
+    height: 32px;
+    background: #AF009C;
+    border: 2px solid #5D0053;
+    border-radius: 5px;
+    transition: 0.5s;
+  }
+  #contenedor-botones > input:hover {
+    background: #005D0A;
+    border: 2px solid #17010C;
+  }
+  #dibujo {
+    background: #936EFF;
+    margin: 60px auto;
+    padding: 50px;
+    width: 70%;
+    height: 400px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    border-radius: 12px;
+  }
+  #dibujo .item {
+    display: inline-block;
+    background: #FF936E;
+    margin: 8px auto;
+    width: 150px;
+    height: 75px;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 2px 3px 12px black;
+    transition: 0.3s;
+  }
+  #dibujo .item-sel {
+    display: inline-block;
+    background: #FF8F5E;
+    margin: 8px auto;
+    width: 150px;
+    height: 75px;
+    border: 2px solid #FDEF16;
+    border-radius: 8px;
+    box-shadow: 3px 5px 15px black;
+    transition: 0.3s;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 0 12px 12px 0px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 12px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Frame.html">Anterior</a></li>
+      <li><a href="Sublime.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenido">
+    <h2>Name:</h2>
+    <h2>Value:</h2>
+    <div id="contenedor-linea">
+      <div id="linea" class="linea">
+        <input id="nombre" class="nombre" onchange="cambia_nombre(this);"/>
+        <input id="valor" class="valor" onchange="cambia_valor(this);"/>
+        <input id="close" type="button" value="X" onclick="close_linea(this);"/>
+      </div>
+    </div>
+    <div id="contenedor-botones">
+      <input type="button" value="New"    onclick="new_();"/>
+      <input type="button" value="Delete" onclick="delete_();"/>
+    </div>
+  </div>
+  <div id="dibujo">
+    <div id="0" class="item" onclick="selecciona(this);"></div>
+  </div/>
+</body>
+</html>

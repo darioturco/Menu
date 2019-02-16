@@ -1,0 +1,370 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Clock</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var plank = false, crea_plank = false, selec = true;
+  var pide = false;
+  var pos_x, pos_y, siz, ang, rot;
+  var pos_f, mod, ang_f, f_x, f_y;
+  var varras = [];
+  var sel = -1, sel_f = -1;
+  function Plank(x,y){
+    this.num = varras.length;
+    this.pos = createVector(x,y);
+    this.size = 50;
+    this.ang = 0;
+    this.rot = 0;
+    this.r = random(0,255);
+    this.g = random(0,255);
+    this.b = random(0,255);
+    this.fuerzas = [];
+    this.ang_ac = function(){
+      if(this.ang > 360)this.ang -= 360;
+      if(this.ang < 0)this.ang += 360;
+    }
+    this.draw = function(){
+      push();
+      if(sel == this.num){
+        stroke(255,215,0);
+        strokeWeight(3);
+      }
+      fill(this.r,this.g,this.b);
+      this.ang_ac();
+      translate(this.pos.x,this.pos.y);
+      rotate(-this.ang);
+      rect(0,0,this.size,20);
+      fill(255-this.r,255-this.g,255-this.b);
+      noStroke();
+      ellipse(this.rot,0,20)//dibuja el punto de giro
+      for(c=0;c<this.fuerzas.length;c++){
+        this.fuerzas[c].draw(sel == this.num,sel_f == c);//dubuja las fuerzas aplicadas a la varra
+      }
+      pop();
+    }
+    this.addForce = function(){
+      this.fuerzas.push(new Fuerza(this.r,this.g,this.b));
+    }
+  }
+  function Fuerza(r,g,b){
+    this.pos = 0;
+    this.fx = 100;// componente en x
+    this.fy = 0;//   componente en y
+    this.mod = 100;//modulo
+    this.ang = 0;//  angulo
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.rp = random(0,255);
+    this.gp = random(0,255);
+    this.bp = random(0,255);
+    this.draw = function(col,s){
+      if(col == true){//si esta vara esta seleccionada pinta de los colores de la fuerza
+        if(s == true){
+          stroke(255,215,0);
+        }else{
+          stroke(this.rp,this.gp,this.bp);
+        }
+      }else{//si no pinta de los colores de la vara
+        stroke(this.r,this.g,this.b);
+      }
+      strokeWeight(5);
+      line(this.pos,0,this.fx+this.pos,-this.fy);
+    }
+  }
+  function setup() {
+    canv = createCanvas(810,500);
+    canv.mousePressed(press);
+    canv.mouseReleased(releas);
+    canv.mouseOut(releas);
+    rectMode(CENTER);
+    angleMode(DEGREES);
+    div = createDiv();
+    div.id("Div");
+    div.size(700,div.size.y);
+    div = document.getElementById("Div");
+    sld = createSlider(0,255,0);
+    sld.id("sld");
+    bot1 = document.getElementById("Boton1");
+    bot2 = document.getElementById("Boton2");
+    bot3 = document.getElementById("Boton3");
+    bot4 = document.getElementById("Boton4");
+    bot5 = document.getElementById("Boton5");
+    bot6 = document.getElementById("Boton6");
+    bot7 = document.getElementById("Boton7");
+    bot8 = document.getElementById("Boton8");
+    bot9 = document.getElementById("Boton9");
+    div.appendChild(bot1);
+    div.appendChild(bot2);
+    div.appendChild(bot3);
+    div.appendChild(bot4);
+    div.appendChild(bot5);
+    div.appendChild(bot6);
+    div.appendChild(bot7);
+    div.appendChild(bot8);
+    div.appendChild(bot9);
+    bot1.style.width = "85px"; //setea el tamaño y el espaciado
+    bot1.style.height = "50px";//de los botones
+    bot1.style.margin = "25px";
+    bot2.style.width = "85px";
+    bot2.style.height = "50px";
+    bot2.style.margin = "25px";
+    bot3.style.width = "85px";
+    bot3.style.height = "50px";
+    bot3.style.margin = "25px";
+    bot4.style.width = "85px";
+    bot4.style.height = "50px";
+    bot4.style.margin = "25px";
+    bot5.style.width = "85px";
+    bot5.style.height = "50px";
+    bot5.style.margin = "25px";
+    bot6.style.width = "85px";
+    bot6.style.height = "50px";
+    bot6.style.margin = "25px";
+    bot7.style.width = "85px";
+    bot7.style.height = "50px";
+    bot7.style.margin = "25px";
+    bot8.style.width = "85px";
+    bot8.style.height = "50px";
+    bot8.style.margin = "25px";
+    bot9.style.width = "85px";
+    bot9.style.height = "50px";
+    bot9.style.margin = "25px";
+    div.appendChild(document.getElementById("sld"));
+    ins = createDiv();
+    ins.position(850,25);
+    ins.id("Ins");
+    createP("Position:").parent(ins);
+    pos_x = createInput("","number").parent(ins);
+    pos_y = createInput("","number").parent(ins);
+    createP("Size:").parent(ins);
+    siz = createInput("","number").parent(ins);
+    createP("Angle:").parent(ins);
+    ang = createInput("","number").parent(ins);
+    createP("Anchor:").parent(ins);
+    rot = createInput("","number").parent(ins);
+    pos_x.changed(() => varras[sel].pos.x = pos_x.value());
+    pos_y.changed(() => varras[sel].pos.y = pos_y.value());
+    siz.changed(() => varras[sel].size = siz.value());
+    ang.changed(() => varras[sel].ang = ang.value());
+    rot.changed(() => varras[sel].rot = rot.value());
+    fue = createDiv();
+    fue.position(850,25);
+    fue.id("Fuerzas");
+    createP("Position:").parent(fue);
+    pos_f = createInput("","number").parent(fue);
+    createP("Modulus:").parent(fue);
+    mod = createInput("","number").parent(fue);
+    createP("Angle:").parent(fue);
+    ang_f = createInput("","number").parent(fue);
+    createP("Binomial form:").parent(fue);
+    f_x = createInput("","number").parent(fue);
+    f_y = createInput("","number").parent(fue);
+    pos_f.changed(() => varras[sel].fuerzas[sel_f].pos = parseInt(pos_f.value()));
+    mod.changed(function(){
+      varras[sel].fuerzas[sel_f].mod = parseInt(mod.value());
+      varras[sel].fuerzas[sel_f].fx = Math.cos(varras[sel].fuerzas[sel_f].ang*Math.PI/180)*varras[sel].fuerzas[sel_f].mod;
+      varras[sel].fuerzas[sel_f].fy = Math.sin(varras[sel].fuerzas[sel_f].ang*Math.PI/180)*varras[sel].fuerzas[sel_f].mod;
+      f_x.value(varras[sel].fuerzas[sel_f].fx);
+      f_y.value(varras[sel].fuerzas[sel_f].fy);
+    });
+    ang_f.changed(function(){
+      varras[sel].fuerzas[sel_f].ang = ang_f.value();
+      varras[sel].fuerzas[sel_f].fx = Math.cos(varras[sel].fuerzas[sel_f].ang*Math.PI/180)*varras[sel].fuerzas[sel_f].mod;
+      varras[sel].fuerzas[sel_f].fy = Math.sin(varras[sel].fuerzas[sel_f].ang*Math.PI/180)*varras[sel].fuerzas[sel_f].mod;
+      f_x.value(varras[sel].fuerzas[sel_f].fx);
+      f_y.value(varras[sel].fuerzas[sel_f].fy);
+    });
+    f_x.changed(function(){
+      varras[sel].fuerzas[sel_f].fx = parseInt(f_x.value());
+      varras[sel].fuerzas[sel_f].mod = Math.sqrt(Math.pow(varras[sel].fuerzas[sel_f].fx,2)+Math.pow(varras[sel].fuerzas[sel_f].fy,2));
+      varras[sel].fuerzas[sel_f].ang = Math.atan2(-varras[sel].fuerzas[sel_f].fx, varras[sel].fuerzas[sel_f].fy)*180/Math.PI+90;
+      mod.value(varras[sel].fuerzas[sel_f].mod);
+      if(varras[sel].fuerzas[sel_f].ang < 0){
+        varras[sel].fuerzas[sel_f].ang = 360 + varras[sel].fuerzas[sel_f].ang;
+      }
+      ang_f.value(varras[sel].fuerzas[sel_f].ang);
+    });
+    f_y.changed(function(){
+      varras[sel].fuerzas[sel_f].fy = parseInt(f_y.value());
+      varras[sel].fuerzas[sel_f].mod = Math.sqrt(Math.pow(varras[sel].fuerzas[sel_f].fx,2)+Math.pow(varras[sel].fuerzas[sel_f].fy,2));
+      mod.value(varras[sel].fuerzas[sel_f].mod);
+      varras[sel].fuerzas[sel_f].ang = Math.atan2(-varras[sel].fuerzas[sel_f].fx, varras[sel].fuerzas[sel_f].fy)*180/Math.PI+90;
+      if(varras[sel].fuerzas[sel_f].ang < 0){
+        varras[sel].fuerzas[sel_f].ang = 360 + varras[sel].fuerzas[sel_f].ang;
+      }
+      ang_f.value(varras[sel].fuerzas[sel_f].ang);
+    });
+    ins.hide();
+    fue.hide();
+  }
+  function draw() {
+    background(sld.value());
+    for(i=0;i<varras.length;i++){
+      varras[i].draw();
+    }
+    if(pide == true){
+      aux = get(mouseX,mouseY);//agarra el pixel al que apuntael mause
+      sel = -1;
+      sel_f = -1;
+      for(i=0;i<varras.length;i++){//busca si ese pixel es del mismo color que algun plank
+        if(aux[0] == Math.round(varras[i].r) && aux[1] == Math.round(varras[i].g) && aux[2] == Math.round(varras[i].b)){
+          selection(i);//si lo es selecciona esa
+          break;//       y sale del for
+        }
+      }
+      pide = false;
+    }else{
+      if(sel_f == -1){
+        fue.hide();
+        if(sel == -1){
+          ins.hide();
+        }
+      }else{
+        ins.hide();
+      }
+    }
+    if(plank == true){
+      push();
+      strokeWeight(2);
+      stroke(255,0,200);
+      fill(255);
+      ellipse(mouseX,mouseY,20);
+      pop();
+    }else{
+      if(crea_plank == true){
+        varras[varras.length-1].size = Math.abs(varras[varras.length-1].pos.x-mouseX)*5;
+        varras[varras.length-1].ang = (varras[varras.length-1].pos.y-mouseY);
+        varras[sel].ang_ac();
+        siz.value(varras[sel].size);
+        ang.value(varras[sel].ang);
+      }
+    }
+  }
+  function selection(i_){
+    sel = i_;
+    if(sel <= -1){
+      sel = varras.length-1;
+    }
+    if(sel >= varras.length){
+      sel = 0;
+    }
+    ins.show();
+    pos_x.value(varras[sel].pos.x);
+    pos_y.value(varras[sel].pos.y);
+    siz.value(varras[sel].size);
+    ang.value(varras[sel].ang);
+    rot.value(varras[sel].rot);
+  }
+  function press(){
+    if(selec == true){
+      pide = true;//se fijara si el pixel tocado es de algun bloque
+    }
+    if(plank == true){
+      plank = false;
+      crea_plank = true;
+      varras.push(new Plank(mouseX,mouseY));
+      selection(varras.length-1);
+    }
+  }
+  function releas(){
+    if(crea_plank == true){
+      crea_plank = false;
+    }
+  }
+  function Select(){
+    selec = true;
+    plank = false;
+  }
+  function New_plank(){//abilita o saca el crear un nuevo plank
+    if(plank == true){
+      selec = true;
+      plank = false;
+    }else{
+      selec = false;
+      plank = true;
+    }
+  }
+  function New_vector(){
+    if(sel != -1){
+      varras[sel].addForce();
+    }
+  }
+  function Eliminar(){
+    if(sel != -1){
+      varras.splice(sel,1);
+      for(var j=0;j<varras.length;j++){
+        varras[j].num = j;
+      }
+      sel = -1;
+      sel_f = -1;
+      Select();
+    }
+  }
+  function Izquierda(){
+    Select();
+    if(varras.length != 0){
+      selection(sel-1);
+    }
+  }
+  function Derecha(){
+    Select();
+    if(varras.length != 0){
+      selection(sel+1);
+    }
+  }
+  function Sel_fuerza(){
+    if(sel != -1 && varras[sel].fuerzas.length != 0){
+      set_sel_f(0);
+      fue.show();
+    }
+  }
+  function Izquierda_F(){
+    if(sel != -1 && varras[sel].fuerzas.length != 0){
+      set_sel_f(sel_f-1);
+    }
+  }
+  function Derecha_F(){
+    if(sel != -1 && varras[sel].fuerzas.length != 0){
+      set_sel_f(sel_f+1);
+    }
+  }
+  function set_sel_f(num){
+    sel_f = num;
+    if(sel_f <= -1){
+      sel_f = varras[sel].fuerzas.length-1;
+    }
+    if(sel_f >= varras[sel].fuerzas.length){
+      sel_f = 0;
+    }
+    pos_f.value(varras[sel].fuerzas[sel_f].pos);
+    mod.value(varras[sel].fuerzas[sel_f].mod);
+    ang_f.value(varras[sel].fuerzas[sel_f].ang);
+    f_x.value(varras[sel].fuerzas[sel_f].fx);
+    f_y.value(varras[sel].fuerzas[sel_f].fy);
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Creator.html">Anterior</a></li>
+      <li><a href="Gravity.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <button Id="Boton1" type="button" onclick="Select()">Select</button>
+  <button Id="Boton2" type="button" onclick="New_plank()">New Plank</button>
+  <button Id="Boton3" type="button" onclick="Eliminar()">Delete</button>
+  <button Id="Boton4" type="button" onclick="Izquierda()"><<</button>
+  <button Id="Boton5" type="button" onclick="Derecha()">>></button>
+  <br>
+  <button Id="Boton6" type="button" onclick="New_vector()">New Vector</button>
+  <button Id="Boton7" type="button" onclick="Izquierda_F()"><< F</button>
+  <button Id="Boton8" type="button" onclick="Sel_fuerza()">Pick Force</button>
+  <button Id="Boton9" type="button" onclick="Derecha_F()">F >></button>
+</body>
+</html>

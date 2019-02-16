@@ -1,0 +1,103 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Counting</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var input;
+  var div;
+  var palabras = [];
+  var pal_obj = {};
+  var pal_lis = [];
+  function setup () {
+    noCanvas();
+    input = document.getElementById("text_");
+    div = document.getElementById("output");
+  }
+  function pressMouse () {
+    let borrar = document.getElementsByClassName("In");
+    for(let i=0, j = borrar.length; i<j ; i++){
+      div.removeChild(borrar[0]);
+    }
+    palabras = input.value;
+    palabras = palabras.split(/\W+/);//separa las palabras por caracter especial
+    pal_obj = {};
+    pal_lis = [];
+    for(palabra of palabras){
+      if(pal_obj[palabra] === undefined){
+        pal_obj[palabra] = 1;
+        pal_lis.push(palabra);
+      }else{
+        pal_obj[palabra]++;
+      }
+    }
+    let aux;
+    for(palabra of pal_lis){
+      if(palabra != ""){
+        aux = createP(palabra + ": " + pal_obj[palabra]).parent(div);
+        aux.id("in");
+        aux.class("In");
+        aux = createDiv().parent(aux).id("div_in");
+        aux.size(15*pal_obj[palabra],25);
+        aux.position(100,aux.position().y);
+      }
+    }
+  }
+  </script>
+  <style>
+  textarea {
+    display: block;
+    width: 80%;
+    height: 100px;
+    resize: none;
+    margin: 25px auto;
+    border-radius: 4px;
+  }
+  #boton {
+    display: block;
+    width: 14%;
+    height: 32px;
+    margin: 20px auto;
+    color: black;
+    background-color: #27EEFA;
+    border: none;
+    border-radius: 8px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+  }
+  #boton:hover {
+    color: white;
+    background-color: #3327FA;
+  }
+  #output {
+    display: block;
+    padding: 5px 15px
+  }
+  #in {
+    display: block;
+  }
+  #div_in {
+    background-color: #F700BF;
+    display: inline-block;
+    margin-left: 25px;
+    border-radius: 7px;
+    width: 0px;
+    transition-duration: 1.25s;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Erase.html">Anterior</a></li>
+      <li><a href="Deploy.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <textarea id="text_" placeholder="Insert the text to count here"></textarea>
+  <button id="boton" type="button" onClick="pressMouse()">Submit</button>
+  <div id="output"></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Binary</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var Arbol = null;
+  var dist_ = 125;
+  function Nodo(value, x, y){
+    this.value = value;
+    this.right = null;
+    this.left = null;
+    this.x = x;
+    this.y = y;
+  }
+  Nodo.prototype.dibuja = function(){
+    if(this.right != null){
+      line(this.x,this.y,this.right.x,this.right.y);
+      this.right.dibuja();
+    }
+    if(this.left != null){
+      line(this.x,this.y,this.left.x,this.left.y);
+      this.left.dibuja();
+    }
+    ellipse(this.x,this.y,30);
+    push();
+    noStroke();
+    fill(255);
+    rectMode(CENTER);
+    text(this.value,this.x-6,this.y+3);
+    pop();
+  }
+  Nodo.prototype.carga = function(value){
+    if(this.value != value){
+      if(this.value < value){
+        if(this.right == null){
+          this.right = new Nodo(value,this.x+dist_/(((this.y-20)/60)+1),this.y+60);
+        }else{
+          this.right.carga(value);
+        }
+      }else{
+        if(this.left == null){
+          this.left = new Nodo(value,this.x-dist_/(((this.y-20)/60)+1),this.y+60);
+        }else{
+          this.left.carga(value);
+        }
+      }
+    }
+
+  }
+  function loadNodos(cant) {
+    for(i=0;i<cant;i++){
+      Arbol.carga(Math.trunc(Math.random()*100));
+    }
+  }
+  function setup() {
+    Arbol = new Nodo(50,0,20);
+    loadNodos(12);
+    canv = createCanvas(windowWidth-250,windowHeight-100);
+    background(75);
+    stroke(255);
+    fill(0);
+    translate(canv.width/2,0);
+    Arbol.dibuja();
+  }
+  </script>
+  <style>
+  canvas {
+    display: block;
+    margin: auto;
+    border: 3px solid #111;
+    border-radius: 16px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Entrada.html">Anterior</a></li>
+      <li><a href="Clock.html">Siguiente</a></li>
+    </ul>
+  </header>
+</body>
+</html>

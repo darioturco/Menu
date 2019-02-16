@@ -1,0 +1,98 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Perceptron</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var div;
+  var input;
+  var info = "";
+  var start_ = "Escribe un texto";
+  function setup () {
+    noCanvas();
+    /*canv.drop((file) => { //drag and drop a file
+        input.value += file.data;
+    });*/
+    div = document.getElementById("output");
+    input = document.getElementById("text_");
+  }
+  function pressed_boton(){
+    let i = 0;
+    let j = 0;
+    div.style.visibility = "visible";
+    borrar = document.getElementsByClassName("spa");
+    j = borrar.length;
+    for(i=0 ; i<j ; i++){
+      div.removeChild(borrar[0]);
+    }
+    info = input.value;
+    info = info.split(/[ .,]+/);
+    let aux = null;
+    for(i=0 ; i<info.length ; i++){
+      createSpan(info[i]).parent(div).id("#"+i).class("spa");
+      aux = document.getElementById("#"+i);
+      aux.setAttribute("onmouseover","entra(this)");
+      aux.setAttribute("onmouseout","sale(this)");
+      aux.setAttribute("onclick","apreta(this)");
+      createSpan(" ").parent(div);
+    }
+  }
+  function entra(span){
+    span.style.backgroundColor = color(210,210,210);
+  }
+  function sale(span){
+    span.style.backgroundColor = color(255,255,255);
+  }
+  function apreta(span){
+    span.innerHTML = "";
+  }
+  </script>
+  <style>
+  textarea {
+    display: block;
+    width: 80%;
+    height: 100px;
+    resize: none;
+    margin: 25px auto;
+    border-radius: 4px;
+  }
+  #boton {
+    display: block;
+    width: 14%;
+    height: 32px;
+    margin: 20px auto;
+    color: black;
+    background-color: #27EEFA;
+    border: none;
+    border-radius: 8px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+  }
+  #boton:hover {
+    color: white;
+    background-color: #3327FA;
+  }
+  #output {
+    width: 80%;
+    margin: auto;
+    padding: 5px;
+    border-style: dashed;
+    visibility: hidden;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Tensor.html">Anterior</a></li>
+      <li><a href="Counting.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <textarea id="text_" placeholder="Write a text."></textarea>
+  <button id="boton" type="button" onClick="pressed_boton()">Submit</button>
+  <div id="output"></div>
+</body>
+</html>

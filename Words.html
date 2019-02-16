@@ -1,0 +1,118 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Words</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <style>dev{padding: 25px; margin: 25px;}</style>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var end = false;
+  var pob = 200;
+  var mut = 0.025;
+  var word = "Pienso luego existo si super la materia de IPC es super wiiiii";
+  var objets = [], parent = new Array(40);
+  var parrafo = null;
+  function unit(word_){
+    this.get_score = function(){
+      cont = 0;
+      for(c=0;c<this.word.length;c++){
+        if(this.word[c] == word[c]){
+          cont++;
+        }
+      }
+      return cont;
+    }
+    this.word = word_;
+    this.score = this.get_score(word_.length);
+  }
+  function random_char(){
+    c = Math.floor(Math.random()*59+63);
+    if(c == 63){c = 32;}
+    if(c == 64){c = 46;}
+    return String.fromCharCode(c);
+  }
+  function random_word(tam){
+    var str = "";
+    for(j=0;j<tam;j++){
+      str = str.concat(random_char());
+    }
+    return str;
+  }
+  function ordena(){
+    var aux = null;
+    var n = objets.length;
+    do {
+      aux = null;
+      for(i=1;i<n;i++) {
+        if(objets[i-1].score > objets[i].score){
+          aux = objets[i];
+          objets[i] = objets[i-1];
+          objets[i-1] = aux;
+        }
+      }
+      n--;
+    }while(aux != null);
+    for(i=0;i<parent.length;i++){
+      parent[i] = objets[objets.length-1-i];
+    }
+    parrafo.html(parent[0].word);
+  }
+  function mezcla(){
+    for(i=0;i<parent.length;i+=2){
+      for(j=0;j<10;j++){
+        objets[(i)*(pob/parent.length)+j] = gen(parent[i],parent[i+1]);
+      }
+    }
+  }
+  function gen(par1,par2){
+    var str = "";
+    for(k=0;k<word.length;k++){
+      if(Math.random() <= mut){
+        str = str.concat(random_char());
+      }else{
+        if(Math.random() < 0.5){
+          str = str.concat(par1.word[k]);
+        }else{
+          str = str.concat(par2.word[k]);
+        }
+      }
+    }
+    str = new unit(str);
+    if(str.score == word.length && end == false){
+      console.log(str.word);
+      console.log("Finished");
+      end = true;
+    }
+    return str;
+  }
+  function setup() {
+    frameRate(10);
+    parrafo = createDiv(word);
+    parrafo.center();
+    parrafo.size(500,750);
+    parrafo.style('font-size','45px');
+    for(i=0;i<pob;i++){
+      objets.push(new unit(random_word(word.length)));
+    }
+    ordena();
+    mezcla();
+  }
+  function draw() {
+    if(end == false){
+      ordena();
+      mezcla();
+    }else{
+      parrafo.html(word);
+      noLoop();
+    }
+  }
+  </script>
+</head>
+<body>
+  <center id="center">
+    <a href="Menu.html">Volver al menu</a>
+    <br>
+    <button type="button" onclick="pressed_boton()">Clear</button>
+  </center>
+</body>
+</html>

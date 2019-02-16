@@ -1,0 +1,204 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Creator</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var imagen = null;
+  var best_fit = Infinity;
+  var min = Infinity;
+  var mut_col = 7.5;
+  var mut_pos = 5;
+  var siz = 250;
+  var pob = 1000;
+  var mut = 5000;
+  var pob_cont = 0;
+  var aux = 0;
+  var pos = 0;
+  var on = false;
+  var agr = true;
+  var best = [], actual = [], copia = [], best_copia = [], list = [];
+  function pressed_boton(){
+    on = true;
+  }
+  function agregar(pun, cop){
+    aux = new Poligon(cop.r,cop.g,cop.b,cop.a);
+    aux.lis.length = cop.lis.length;
+    for(i=0;i<cop.lis.length;i++){
+      aux.lis[i] = new Point(cop.lis[i].x,cop.lis[i].y);
+    }
+    pun.push(aux);
+  }
+  function random(max){
+    return Math.floor(Math.random()*max);
+  }
+  function randon(){
+    return Math.random()*2-1;
+  }
+  function random_pol(){
+    var lis = [];
+    var pol = new Poligon(random(255),random(255),random(255),random(255));
+    for(var lados = random(3)+3;lados > 0;lados--){
+      pol.lis.push(new Point(random(siz),random(siz)));
+    }
+    return pol;
+  }
+  function Poligon(r,g,b,a){//clase que va a guardar los poligonos
+    this.r = r;//guarda el rojo
+    this.g = g;//guarda el verde
+    this.b = b;//guarda el azul
+    this.a = a;//gualda el alfa
+    this.lis = [];//lista con los puntos del poligono
+  }
+  function Point(x,y){
+    this.x = x;
+    this.y = y;
+  }
+  var Sketck_1 = function(p){
+    function drop_f(file){
+      p.image(p.createImg(file.data).hide(),0,0,siz,siz);
+      p.loadPixels();
+      imagen = p.pixels;
+    }
+    p.setup = function() {
+      p.canv = p.createCanvas(siz,siz);
+      p.canv.id("Canvas_1");
+      p.canv.drop(drop_f);
+      p.background(150);
+    }
+  }
+  var Sketck_2 = function(p){//controla el canvas2 que va a mostrar
+    p.i = 0;
+    p.j = 0;
+    p.setup = function() {//   el mejor resultado hasta el momento
+      p.canv = p.createCanvas(siz,siz);
+      p.canv.position(p.canv.position().x+siz/10,p.canv.position().y);
+      p.canv.id("Canvas_2");
+      p.background(0);
+      p.noStroke();
+    }
+    p.draw = function() {//dibuja lo que hay en best
+      p.background(0);
+      for(p.i = 0;p.i<best.length;p.i++){//por cada poligono en best
+        p.fill(best[p.i].r,best[p.i].g,best[p.i].b,best[p.i].a);//setea el color
+        p.beginShape();
+        for(p.j = 0;p.j<best[p.i].lis.length;p.j++){//dibuja cada punto de ese poligono
+          p.vertex(best[p.i].lis[p.j].x,best[p.i].lis[p.j].y);
+        }
+        p.endShape(p.CLOSE);
+      }//dibuja la mejor forma obtenida
+    }
+  }
+  var Sketck_3 = function(p){
+    p.fitness = function(){
+      var fit = 0, x = 0, red = 0, green = 0, blue = 0;
+      p.loadPixels();
+      for(x=0;x<imagen.length;x+=4){
+        red = imagen[x] - p.pixels[x];
+        green = imagen[x+1] - p.pixels[x+1];
+        blue = imagen[x+2] - p.pixels[x+2];
+        fit += red*red+blue*blue+green*green;
+      }
+      return fit;
+    }
+    p.mutate = function(num){
+      actual[num].r += randon()*mut_col;//muta el rojo
+      if(actual[num].r < 0){actual[num].r = 0;}
+      if(actual[num].r > 255){actual[num].r = 255;}
+      actual[num].g += randon()*mut_col;//muta el verde
+      if(actual[num].g < 0){actual[num].g = 0;}
+      if(actual[num].g > 255){actual[num].g = 255;}
+      actual[num].b += randon()*mut_col;//muta el azul
+      if(actual[num].b < 0){actual[num].b = 0;}
+      if(actual[num].b > 255){actual[num].b = 255;}
+      actual[num].a += randon()*mut_col;//muta el canal alfa
+      if(actual[num].a < 25){actual[num].a = 25;}
+      if(actual[num].a > 255){actual[num].a = 255;}
+      for(c=0;c<actual[num].lis.length;c++){
+        actual[num].lis[c].x += randon()*mut_pos;////muta x
+        if(actual[num].lis[c].x < 0) actual[num].lis[c].x = 0;
+        if(actual[num].lis[c].x > siz) actual[num].lis[c].x = siz;
+        actual[num].lis[c].y += randon()*mut_pos;//muta y
+        if(actual[num].lis[c].y < 0) actual[num].lis[c].y = 0;
+        if(actual[num].lis[c].y > siz) actual[num].lis[c].y = siz;
+      }
+    }
+    p.setup = function() {//             controla el canvas2 que va a mostrar
+      p.canv = p.createCanvas(siz,siz);//el nuevo poligono random agregado
+      p.canv.position(p.canv.position().x+12*siz/10,p.canv.position().y);
+      p.canv.id("Canvas_3");
+      p.background(0);
+      p.noStroke();
+      p.frameRate(100);
+    }
+    p.draw = function() {
+      p.background(0);
+      if(on == true){
+        pob_cont++;
+        if(agr == true){
+          pob_aux_med = pob;
+          list.push(random_pol());
+          agregar(actual,list[list.length-1]);
+        }else{
+          pob_aux_med = mut;
+          copia = JSON.parse(JSON.stringify(actual));
+        }
+        for(p.i = 0;p.i<actual.length;p.i++){//por cada poligono en actual
+          if(agr == false){
+            p.mutate(p.i);// los muta si tiene que hacerlo
+          }
+          p.fill(actual[p.i].r,actual[p.i].g,actual[p.i].b,actual[p.i].a);//setea el color
+          p.beginShape();
+          for(p.j = 0;p.j<actual[p.i].lis.length;p.j++){//dibuja cada punto de ese poligono
+            p.vertex(actual[p.i].lis[p.j].x,actual[p.i].lis[p.j].y);
+          }
+          p.endShape(p.CLOSE);
+        }
+        if(agr == true){
+          actual.splice(actual.length-1,1);
+        }
+        aux = p.fitness();
+        if(aux < min){
+          min = aux;
+          if(agr == true){
+            pos = pob_cont-1;
+          }else{
+            best_copia = JSON.parse(JSON.stringify(actual));//encontro una mejor mutacion
+          }
+        }else{
+          if(agr == false){
+            actual = JSON.parse(JSON.stringify(copia));
+          }
+        }
+        if(pob_cont >= pob_aux_med){
+          if(min < best_fit){
+            best_fit = min;
+            if(agr == true){
+              agregar(actual,list[pos]);//agrega el mejor poligono encontrado
+              agregar(best,list[pos]);
+            }else{
+              actual = JSON.parse(JSON.stringify(best_copia));
+              best = JSON.parse(JSON.stringify(best_copia));
+            }
+          }
+          min = Infinity;
+          pob_cont = 0;
+          list = [];
+          agr = !agr;
+        }
+      }
+    }
+  }
+  master_1 = new p5(Sketck_1);
+  master_2 = new p5(Sketck_2);
+  master_3 = new p5(Sketck_3);
+  </script>
+</head>
+<body>
+  <center>
+    <a href="Menu.html">Volver al menu</a>
+    <button type="button" onclick="pressed_boton()">Start</button>
+  </center>
+</body>
+</html>

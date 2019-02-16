@@ -1,0 +1,192 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Eat</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  veics = [];
+  food = [];
+  poison = [];
+  pob = 20;
+  function Veiculo(pos_){
+    this.pos = pos_;
+    this.vel = createVector(0,0);
+    this.acc = createVector(0,0);
+    this.r = 10;
+    this.health = 1;
+    this.max_vel = random(0.5,5);
+    this.sight_f = random(25,1000);
+    this.sight_p = random(25,1000);
+    this.food = random(-3,3);
+    this.pois = random(-3,3);
+    this.Update = function(){
+      this.repulse();
+      this.limits();
+      this.food_attraction();
+      this.poison_attraction();
+      this.vel.add(this.acc);
+      this.vel.limit(this.max_vel);
+      this.pos.add(this.vel);
+      this.acc.mult(0);
+      this.life();
+      push();
+      ver = this.health*255;
+      fill(255-ver,ver,0);
+      translate(this.pos.x, this.pos.y);
+      rotate(this.vel.heading() + PI/2);
+      beginShape();
+      vertex(0, -this.r * 2);
+      vertex(-this.r, this.r * 2);
+      vertex(this.r, this.r * 2);
+      endShape(CLOSE);
+      pop();
+    }
+    this.force = function(f){
+      this.acc.add(f);
+    }
+    this.seek = function(obj, inten){
+      obj = p5.Vector.sub(obj,this.pos);
+      obj.setMag(this.max_vel);
+      obj = p5.Vector.sub(obj,this.vel);
+      obj.setMag(inten);
+      return obj;
+    }
+    this.repulse = function(){
+      var aux = null;
+      for(var t=0;t<veics.length;t++){
+        aux = p5.Vector.sub(this.pos,veics[t].pos);
+        if(aux.mag() < this.r*2.25 && aux.mag() > 0){
+          aux.normalize();aux.mult(this.max_vel);
+          aux.sub(this.vel);
+          aux.mult(this.max_acc);
+          this.force(aux);
+        }
+      }
+    }
+    this.food_attraction = function(){
+      var min = Infinity;
+      var aux = null;
+      var pos = -1;
+      for(var j=0;j<food.length;j++){
+        aux = p5.Vector.sub(this.pos,food[j]);
+        if(aux.mag() < this.sight_f && aux.mag() < min){
+          min = aux.mag();
+          pos = j;
+        }
+      }
+      if(pos != -1){
+        this.force(this.seek(food[pos],this.food));
+      }
+    }
+    this.poison_attraction = function(){
+      var min = Infinity;
+      var aux = null;
+      var pos = -1;
+      for(var j=0;j<poison.length;j++){
+        aux = p5.Vector.sub(this.pos,poison[j]);
+        if(aux.mag() < this.sight_p && aux.mag() < min){
+          min = aux.mag();
+          pos = j;
+        }
+      }
+      if(pos != -1){
+        this.force(this.seek(poison[pos],this.poison));
+      }
+    }
+    this.life = function(){
+      this.health -= 0.01;
+      var aux = null;
+      var j = 0;
+      for(j=0;j<food.length;j++){
+        aux = p5.Vector.sub(this.pos,food[j]);
+        if(aux.mag() < this.r+15){
+            this.health += 0.3;
+            food[j] = createVector(random(0,canv.width),random(0,canv.height));
+        }
+      }
+      for(j=0;j<poison.length;j++){
+        aux = p5.Vector.sub(this.pos,poison[j]);
+        if(aux.mag() < this.r+15){
+            this.health -= 0.3;
+            poison[j] = createVector(random(0,canv.width),random(0,canv.height));
+        }
+      }
+      if(this.health <= 0){
+        this.pos = createVector(random(0,canv.width),random(0,canv.height));
+        this.max_vel = this.max_vel + random(-0.3,0.3);
+        this.sight_f = this.sight_f + random(-75,75);
+        this.sight_p = this.sight_p + random(-75,75);
+        this.food = this.food + random(-0.5,0.5);
+        this.pois = this.pois + random(-0.5,0.5);
+        if(this.max_vel <= 0){
+          this.max_vel = 0.5;
+        }
+        if(this.sight_f <= 0){
+          this.sight_f = 50;
+        }
+        if(this.sight_p <= 0){
+          this.sight_p = 50;
+        }
+        this.health = 1;
+      }
+    }
+    this.limits = function(){//pone los limites del movimiento
+      if(this.pos.x < 0){
+        this.pos.x = canv.width;
+      }
+      if(this.pos.x > canv.width){
+        this.pos.x = 0;
+      }
+      if(this.pos.y < 0){
+        this.pos.y = canv.height;
+      }
+      if(this.pos.y > canv.height){
+        this.pos.y = 0;
+      }
+    }
+  }
+  function setup() {
+    canv = createCanvas(windowWidth-250,windowHeight-100);
+    canv.position((windowWidth-canv.width)/2,50);
+    noStroke();
+    for(i=0;i<pob;i++){
+      veics.push(new Veiculo(createVector(random(0,canv.width),random(0,canv.height))));
+      poison.push(createVector(random(0,canv.width),random(0,canv.height)));
+    }
+    for(i=0;i<30;i++){
+      food.push(createVector(random(0,canv.width),random(0,canv.height)));
+    }
+  }
+  function draw() {
+    background(0);
+    for(i=0;i<veics.length;i++){
+      veics[i].Update();
+    }
+    fill(0,255,0);
+    for(i=0;i<food.length;i++){
+      ellipse(food[i].x,food[i].y,10);
+    }
+    fill(255,0,0);
+    for(i=0;i<poison.length;i++){
+      ellipse(poison[i].x,poison[i].y,10);
+    }
+  }
+  </script>
+  <style>
+  canvas {
+    border-radius: 9px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Wind.html">Anterior</a></li>
+      <li><a href="Creator.html">Siguiente</a></li>
+    </ul>
+  </header>
+</body>
+</html>

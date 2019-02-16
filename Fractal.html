@@ -1,0 +1,118 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Fractal</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  const frame = 50;
+  const vel = 1.5;
+  const paso_max = 200;
+  const simetrico = true;
+  var ang = [], partida = [];
+  var largo = 1, largo_max = 50, paso = 2, wid;
+  function setup() {
+    let canv = createCanvas(windowWidth-250,windowHeight-100);
+    wid = canv.width;
+    canv.position((windowWidth-wid)/2,80);
+    canv.parent(document.getElementById("contenedor"));
+    frameRate(frame);
+    translate(wid/2,0);
+    strokeWeight(3);
+    stroke(255);
+    inicia();
+  }
+  function inicia(){
+    ang = [];
+    partida = [];
+    largo = 1;
+    largo_max = 50;
+    paso = 2;
+    background(0);
+    line(0,0,0,50);
+    reset_ang(paso);
+    partida[0] = {x: 0, y: 50}
+  }
+  function draw() {
+    translate(wid/2,0);
+    for(let i=0;i<ang.length;i++){
+      line(partida[Math.floor(i/2)].x,partida[Math.floor(i/2)].y,partida[Math.floor(i/2)].x+Math.sin(ang[i])*largo,partida[Math.floor(i/2)].y+Math.cos(ang[i])*largo);
+    }
+    largo += vel;
+    if(largo >= largo_max){
+      let aux = [];
+      aux.length = paso;
+      for(let i=0;i<paso;i++){
+        aux[i] = {x: partida[Math.floor(i/2)].x+Math.sin(ang[i])*largo_max, y: partida[Math.floor(i/2)].y+Math.cos(ang[i])*largo_max};
+      }
+      partida = aux;//guarda los puntos de partida
+      largo_max -= largo_max*vel/10;//largo_max lo achica
+      largo = 0;//largo lo resetea
+      paso *= 2;//paso lo duplica
+      reset_ang(paso);//reseta los agulos
+      if(paso >= paso_max){
+        noLoop();
+        console.log("Termino el fractal");
+      }
+    }
+  }
+  function reset_ang(num){
+    ang.length = num;
+    for(let i=0;i<num;i++){
+      if(i % 2 == 0){
+        ang[i] = random(0,Math.PI/2.5);
+      }else{
+        if(simetrico == true){
+          ang[i] = -ang[i-1];
+        }else{
+          ang[i] = -random(0,Math.PI/2.5);
+        }
+      }
+    }
+  }
+  function pressed_boton() {
+    inicia();
+    loop();
+  }
+  </script>
+  <style>
+  html, body {
+    height: 100%;
+  }
+  #contenedor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  canvas {
+    margin: auto;
+    border-radius: 50px;
+  }
+  button {
+    background: #0D7E80;
+    border: none;
+    border-radius: 7px;
+    width: 10%;
+    height: 24px;
+    margin: 4px auto;
+    transition: 0.5s;
+  }
+  button:hover {
+    background: #7FFFD4;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Sublime.html">Anterior</a></li>
+      <li><a href="Animation.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor">
+    <button onclick="pressed_boton()">Reload</button>
+  </div>
+</body>
+</html>

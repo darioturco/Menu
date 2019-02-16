@@ -1,0 +1,57 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Formas</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var angle = 0;
+  var scale_x = 0, scale_y = 0;
+  function setup() {
+    canv = createCanvas(500,500);
+    angleMode(DEGREES);
+    rectMode(CENTER);
+  }
+  function draw() {
+    background(0);
+    fill(255);
+    translate(canv.width/2,canv.height/2);
+    angle += 1;
+    push();
+    rotate(angle);
+    rect(0,0,90,50);
+    pop();push();
+    rotate(-angle);
+    rect(75,75,50,50);
+    stroke(255);
+    line(0,0,75,75);
+    pop();
+    fill(0,225,125);
+    scale(map(Math.sin(angle/10),-1,1,-2.5,5),1);
+    rect(0,-200,40,40);
+  }
+  </script>
+  <style>
+  body {
+    background: radial-gradient(#888,#111);
+  }
+  canvas {
+    margin: 50px auto;
+    padding: 0;
+    display: block;
+    border: 2px solid #444;
+    border-radius: 16px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Sliders.html">Anterior</a></li>
+      <li><a href="Entrada.html">Siguiente</a></li>
+    </ul>
+  </header>
+</body>
+</html>

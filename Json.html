@@ -1,0 +1,40 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Json</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var url = "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
+  var info;
+  var input_, output_;
+  function setup() {
+    input_ = document.getElementById("Entrada");
+    output_ = document.getElementById("Salida");
+  }
+  function pressed_boton() {
+    loadJSON(url+input_.value,gotData,'jsonp');
+  }
+  function gotData(data){
+    data_ = data;
+    //console.log(data_);
+    info = "";
+    output_.innerHTML = "";
+    for(i=0;i<data_[2].length;i++){
+      info = info + "\n" + data_[2][i];
+    }
+    output_.innerHTML = info;
+  }
+  </script>
+</head>
+<body>
+  <center>
+    <a href="Menu.html">Volver al menu</a>
+    <h1 id="Titulo">Enter a search in wikipedia.</h1>
+    <br>
+    <input id="Entrada" type="input"></input>
+    <button type="button" onclick="pressed_boton()">Search</button>
+    <p id="Salida"></p>
+  </center>
+</body>
+</html>

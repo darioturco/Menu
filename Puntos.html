@@ -1,0 +1,74 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Puntos</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var i = 0;
+  var lista = [];
+  function setup() {
+    canv = createCanvas(windowWidth-250,windowHeight-100);
+    canv.mousePressed(pulsa);
+    background(0);
+  }
+  function pulsa(event){
+    lista.push({x:mouseX,y:mouseY});
+  };
+  function pressed_boton(){
+    lista = [];
+    background(0);
+    redraw();
+  }
+  function draw() {
+    fill(235,225,250);
+    stroke(200,25,90);
+    for(i=0;i<lista.length;i++){
+      ellipse(lista[i].x,lista[i].y,12);
+    }
+    if(lista.length > 1){
+      for(i=1;i<lista.length;i++){
+        line(lista[i-1].x,lista[i-1].y,lista[i].x,lista[i].y);
+      }
+    }
+  }
+  </script>
+  <style>
+  body {
+    background-color: grey;
+  }
+  canvas {
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+  }
+  #boton {
+    display: block;
+    margin: 9px auto;
+    width: 70px;
+    height: 35px;
+    background-color: #66E9BD;
+    border: 3px solid #4FCCA2;
+    border-radius: 5px;
+    color: #1D84FF;
+    transition-duration: 0.9s;
+  }
+  #boton:hover {
+    cursor: pointer;
+    border: 4px solid #3EB08A;
+    color: #66E9BD;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Entrada.html">Anterior</a></li>
+      <li><a href="Clock.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <input id="boton" type="button" value="Clear" onclick="pressed_boton();">
+</body>
+</html>

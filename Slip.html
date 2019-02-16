@@ -1,0 +1,76 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Dash</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    height: 100%;
+  }
+  body {
+    overflow: hidden;
+    background: linear-gradient(#7FFFD4, #11211E);
+    background-position: 0 47px;
+  }
+  #contenedor {
+    height: 300px;
+    margin: 25px 50px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #7ba;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar {
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 0 0 5px 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  #imagenes {
+    height: auto;
+    margin: 16px;
+    display: inline-block;
+    overflow: hidden;
+  }
+  #imagenes > img {
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    border-radius: 12px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Back.html">Anterior</a></li>
+      <li><a href="Monster.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor">
+    <div id="imagenes">
+      <img src="images/Castillo_1.jpg" alt=""/>
+      <img src="images/Castillo_2.jpg" alt=""/>
+      <img src="images/Castillo_3.jpg" alt=""/>
+      <img src="images/Castillo_4.jpg" alt=""/>
+      <img src="images/Castillo_5.jpg" alt=""/>
+      <img src="images/Castillo_6.jpg" alt=""/>
+      <img src="images/Castillo_7.jpg" alt=""/>
+      <img src="images/Castillo_8.jpg" alt=""/>
+    </div>
+  </div>
+</body>
+</html>

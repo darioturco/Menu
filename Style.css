@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+}
+header {
+  background-color: #7FFFD4;
+  width: 100%;
+}
+header ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+header ul li{
+  display: inline-block;
+}
+header ul li a{
+  color: #1D84FF;
+  display: block;
+  padding: 15px 30px;
+  text-decoration: none;
+}
+header ul li a:hover{
+  background-color: #981DFF;
+}

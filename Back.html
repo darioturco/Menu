@@ -1,0 +1,94 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Dash</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  function click_(num) {
+    document.body.style.backgroundImage = 'url(images/Castillo_'+num+'.jpg)';
+  }
+  </script>
+  <style>
+  body {
+    background-size: cover;
+  }
+  #menu-principal > ul {/*Primer nivel*/
+    list-style: none;
+    border-radius: 5px;
+    width: 150px;
+    margin: auto;
+    margin-top: 50px;
+    padding: 0;
+    display: table;
+  }
+  #menu-principal > ul > li {
+    background-color: #7FD6FF;
+    border: 5px solid #0D638C;
+    border-radius: 9px;
+    margin: 10px 0;
+    padding: 10px;
+    display: block;
+    text-align: center;
+  }
+  #menu-principal > ul > li > a {
+    margin: 0;
+    padding: 0;
+  }
+  #menu-principal > ul > li:hover ul {/*Aparece segundo nivel*/
+    display: inline-block;
+  }
+  #menu-secundario {/*Segundo nivel*/
+    list-style: none;
+    display: none;;
+    position: absolute;
+    margin-left: 40px;
+    padding: 0 40px 0 9px;
+    background-color: #0ECCCF;
+    border: 2px solid #0B9799;
+    border-radius: 5px;
+  }
+  #menu-secundario > li{
+    text-align: center;
+    display: block;
+  }
+  #menu-secundario > li > a{
+    text-align: center;
+    text-decoration: none;
+    color: #090980;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Dash.html">Anterior</a></li>
+      <li><a href="Slip.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="menu-principal">
+    <ul>
+      <li><a>Castle 1-2</a>
+          <ul id="menu-secundario">
+            <li><a href="#" onClick="click_(1);">Castle 1</a></li>
+            <li><a href="#" onClick="click_(2);">Castle 2</a></li>
+          </ul>
+      </li>
+      <li><a>Castle 3-5</a>
+        <ul id="menu-secundario">
+          <li><a href="#" onClick="click_(3);">Castle 3</a></li>
+          <li><a href="#" onClick="click_(4);">Castle 4</a></li>
+          <li><a href="#" onClick="click_(5);">Castle 5</a></li>
+        </ul>
+      </li>
+      <li><a>Castle 5-8</a>
+        <ul id="menu-secundario">
+          <li><a href="#" onClick="click_(6);">Castle 6</a></li>
+          <li><a href="#" onClick="click_(7);">Castle 7</a></li>
+          <li><a href="#" onClick="click_(8);">Castle 8</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

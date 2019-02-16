@@ -1,0 +1,110 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Celulas</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  cel = [];
+  blo = [];
+  cel_cant = 25;
+  blo_cant = 10;
+  rad = 70;
+  muta_ = 0.01;
+  i = 0;
+  j = 0;
+  function Celula(pos_){
+    this.move = function(m){
+      if(m){
+          this.x = this.x+this.vel_x;
+          this.y = this.y+this.vel_y;
+          //se fija si muere
+          if(this.x < 0 || this.x > canv.width || this.y < 0 || this.y > canv.height){
+            this.muta();
+          }
+          for(j=0;j<blo_cant;j++){
+            this.dist_x = this.x - blo[j].x;
+            this.dist_y = this.y - blo[j].y;
+            if(Math.sqrt(this.dist_x*this.dist_x + this.dist_y*this.dist_y) < 0.12+this.value*rad/2){
+              this.score++;
+              blo[j].cambia();
+            }
+          }
+      }
+      fill(0);
+      ellipse(this.x,this.y,this.value*rad);
+    }
+    this.muta = function(pos_){
+      if(random() < muta_){
+        this.value = random(0.1,1);
+      }
+      this.x = random(canv.width*0.1,canv.width*0.9);
+      this.y = random(canv.width*0.1,canv.height*0.9);
+      do {
+        this.value = Math.abs(this.value + random(-0.5,0.5)/(this.score+1));
+      }while(this.value > 1);
+      this.vel_x = random(-1,1)*5/this.value;
+      this.vel_y = random(-1,1)*5/this.value;
+      this.score = 0;
+    }
+    this.pos = pos_;
+    this.value = random(0.1,1);
+    this.score = 0;
+    this.x = random(canv.width*0.1,canv.width*0.9);
+    this.y = random(canv.width*0.1,canv.height*0.9);
+    this.vel_x = random(-1,1)*5/this.value;
+    this.vel_y = random(-1,1)*5/this.value;
+    this.move(false);
+  }
+  function Bloque(){
+    this.cambia = function(){
+      this.x = random(canv.width*0.05,canv.width*0.95);
+      this.y = random(canv.width*0.05,canv.height*0.95);
+    }
+    this.cambia();
+  }
+  function setup() {
+    frameRate(30);
+    canv = createCanvas(windowWidth-250,windowHeight-100);
+    background(190);
+    stroke(255);
+    fill(0);
+    for(i=0;i<cel_cant;i++){//Crea las celulas
+      cel.push(new Celula(i));
+    }
+    for(i=0;i<blo_cant;i++){//Crea los bloques
+      blo.push(new Bloque());
+    }
+  }
+  function draw() {
+    background(190);
+    for(i=0;i<cel_cant;i++){
+      cel[i].move(true);
+    }
+    for(i=0;i<blo_cant;i++){
+      fill(0,0,150);
+      rect(blo[i].x,blo[i].y,12,12);
+    }
+  }
+  </script>
+  <style>
+  canvas {
+    margin: 20px auto;
+    padding: 0;
+    display: block;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Words.html">Anterior</a></li>
+      <li><a href="Seeker.html">Siguiente</a></li>
+    </ul>
+  </header>
+</body>
+</html>

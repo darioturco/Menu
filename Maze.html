@@ -1,0 +1,122 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Maze</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var vel = 16;
+  var tam = 800;
+  var cant = 20;
+  var raz = 1;
+  var cells = [], aux_cell = [], stack = [];
+  var pun = 0, prox = 1;
+  function Cell(x,y) {
+    this.x = x;
+    this.y = y;
+    this.pos = y/raz*cant+x/raz;
+    this.wall = [true,true,true,true];
+    this.vis = true;
+  }
+  Cell.prototype.draw = function(){
+    if(this.wall[0]){line(this.x,this.y,this.x+tam/cant,this.y);}
+    if(this.wall[1]){line(this.x,this.y,this.x,this.y+tam/cant);}
+    if(this.wall[2]){line(this.x,this.y+tam/cant,this.x+tam/cant,this.y+tam/cant);}
+    if(this.wall[3]){line(this.x+tam/cant,this.y+tam/cant,this.x+tam/cant,this.y);}
+  }
+  Cell.prototype.Neighbour = function(){
+    aux_cell = [];
+    if(this.pos >= cant && cells[this.pos-cant].vis == true){//Top
+      aux_cell.push(this.pos-cant);//The top neighbour wasn't visited
+    }
+    if(this.pos % cant != 0 && cells[this.pos-1].vis == true){//Left
+      aux_cell.push(this.pos-1);//The left neighbour wasn't visited
+    }
+    if(this.pos+cant < cant*cant && cells[this.pos+cant].vis == true){//Bottom
+      aux_cell.push(this.pos+cant);//The bottom neighbour wasn't visited
+    }
+    if(this.pos % cant != cant-1 && cells[this.pos+1].vis == true){//Right
+      aux_cell.push(this.pos+1);//The right neighbour wasn't visited
+    }
+    if(aux_cell.length <= 0){
+      return pun;
+    }else if(aux_cell.length == 1){
+      return aux_cell[0];
+    }else{
+      return aux_cell[Math.trunc(Math.random()*aux_cell.length)];
+    }
+  }
+  function remove_wall(pun_,pro_){
+    if(pun_+1 == pro_){//Right
+      cells[pun_].wall[3] = false;
+      cells[pro_].wall[1] = false;
+    }else if(pun_-1 == pro_){//Left
+      cells[pun_].wall[1] = false;
+      cells[pro_].wall[3] = false;
+    }else if(pun_+cant == pro_){//Bottom
+      cells[pun_].wall[2] = false;
+      cells[pro_].wall[0] = false;
+    }else if(pun_-cant == pro_){//Top
+      cells[pun_].wall[0] = false;
+      cells[pro_].wall[2] = false;
+    }
+  }
+  function serch_pun(ind){
+    for(j=0;j<stack.length;j++){
+      if(stack[j] == ind){
+        return j;
+      }
+    }
+    return 0;
+  }
+  function the_end(){
+    console.log("The End");
+    noLoop();
+  }
+  function setup() {
+    raz = tam/cant;
+    frameRate(vel);
+    canv = createCanvas(tam,tam);
+    for(i=0;i<cant;i++){
+      for(j=0;j<cant;j++){
+        cells.push(new Cell(j*raz,i*raz));
+      }
+    }
+    cells[0].vis = false;
+  }
+  function draw() {
+    background(0);
+    stroke(255);
+    for(i=0;i<cells.length;i++){
+      cells[i].draw();
+    }
+    fill(25,200,50);
+    noStroke();
+    rect(cells[pun].x,cells[pun].y,tam/cant,tam/cant);
+    prox = cells[pun].Neighbour();
+    if(prox == pun){//No tiene vecinos sin visitar
+      if(stack.length > 0){
+        stack.splice(serch_pun(pun),1);
+        if(stack.length <= 0){
+          the_end();
+        }else{
+          pun = stack[0];
+        }
+      }else{
+        the_end();
+      }
+    }else{//tiene vecinos sin visitar
+      stack.push(pun);
+      remove_wall(pun,prox);//remover las paredes entre pun y prox
+      cells[prox].vis = false;
+      pun = prox;
+    }
+  }
+  </script>
+</head>
+<body>
+  <center>
+    <a href="Menu.html">Volver al menu</a>
+  </center>
+</body>
+</html>

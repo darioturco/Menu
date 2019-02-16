@@ -1,0 +1,49 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Clock</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var hor, min, seg;
+  var p_hr, p_mn, p_sg;
+  var r = 150;
+  function setup() {
+    canv = createCanvas(windowWidth,windowHeight);
+    p_hr = {x:0,y:150};
+    p_mn = {x:0,y:150};
+    p_sg = {x:0,y:150};
+  }
+  function draw() {
+    background(0);
+    translate(canv.width/2,canv.height/2);
+    rotate(-Math.PI/2);
+    hor = hour();
+    min = minute();
+    seg = second();
+    p_sg = {x:Math.cos(seg*Math.PI/30)*r,y:Math.sin(seg*Math.PI/30)*r};
+    p_mn = {x:Math.cos(min*Math.PI/30)*r*0.85,y:Math.sin(min*Math.PI/30)*r*0.85};
+    p_hr = {x:Math.cos(hor*Math.PI/6)*r*0.6,y:Math.sin(hor*Math.PI/6)*r*0.6};
+    strokeWeight(3.5);
+    stroke(255);
+    ellipse(0,0,20);
+    stroke(255,0,0);
+    line(0,0,p_sg.x,p_sg.y);
+    stroke(0,255,0);
+    line(0,0,p_mn.x,p_mn.y);
+    stroke(0,0,255);
+    line(0,0,p_hr.x,p_hr.y);
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Puntos.html">Anterior</a></li>
+      <li><a href="Json.html">Siguiente</a></li>
+    </ul>
+  </header>
+</body>
+</html>

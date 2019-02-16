@@ -1,0 +1,159 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Csv</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var canv;
+  var matrix = [];
+  var contenedor;
+  var dentro = false;
+  var color, altura;
+  function setup() {
+    contenedor = document.getElementById("contenedor");
+    canv = createCanvas(500,500);
+    canv.parent(document.getElementById("drag"));
+    canv.id("Canvas");
+    canv.dragOver(() => {dentro = true});
+    canv.dragLeave(() => {dentro = false});
+    canv.drop_csv(drop_f);
+    resize();
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    noStroke();
+    color = 0;
+    altura = 1;
+  }
+  function draw() {
+    if(dentro == true){
+      if(color < 200){//se desbanece
+        color += 3;
+      }
+    }else{
+      if(color > 0){//reaparece
+        color -= 3;
+      }
+    }
+    background(200);
+    fill(color);
+    text("Drag & drop a CSV file.",canv.width/2,canv.height/2);
+  }
+  function resize() {
+    canv.size(windowWidth-windowWidth*0.3,125);
+    canv.position((windowWidth-canv.width)/2,80);
+  }
+  function drop_f(file){
+    dentro = false;
+    if(file.data.length > 0){//Si hay informacion leible
+      matrix = [[]];
+      let aux = "";
+      let cont = 0;
+      for(let i=0;i<file.data.length;i++){
+        if(file.data[i] == ';'){//salto de columna
+          matrix[cont].push(aux);
+          aux = "";
+        }else{
+          if(file.data[i] == '\n'){//salto de fila
+            matrix[cont].push(aux);
+            aux = "";
+            cont++;
+            matrix.push([]);
+          }else{
+            aux += file.data[i];//guarda la letra
+          }
+        }
+      }
+      crea_matrix();
+    }
+  }
+  function crea_matrix(){
+    contenedor.removeChild(document.getElementById("table"));//elimina la tabla vieja
+    let table = document.createElement("table");
+    let tr, td;
+    table.id = "table";
+    contenedor.appendChild(table);
+    for(let i=0 ; i<matrix.length ; i++){
+      tr = document.createElement("tr");
+      table.appendChild(tr);
+      for(let j=0 ; j<matrix[i].length ; j++){
+        td = document.createElement("td");
+        tr.appendChild(td);
+        td.innerHTML = matrix[i][j];
+      }
+    }
+  }
+  p5.Element.prototype.drop_csv = function(callback, fxn) {//Function 'drop' of p5 has been changed to read cvs files
+    function makeLoader(theFile) {// Make a file loader callback and trigger user's callback
+      var p5file = new p5.File(theFile);// Making a p5.File object
+      return function(e) {
+        p5file.data = e.target.result;
+        callback(p5file);
+      };
+    }
+    if (window.File && window.FileReader && window.FileList && window.Blob) {// Is the file stuff supported?
+      attachListener('dragover', (evt) => {
+        evt.stopPropagation();
+        evt.preventDefault();
+      },this);
+      attachListener('dragleave', (evt) => {
+        evt.stopPropagation();
+        evt.preventDefault();
+      },this);
+      if (typeof fxn !== 'undefined') {// If just one argument it's the callback for the files
+        attachListener('drop', fxn, this);
+      }
+      attachListener('drop', (evt) => {
+        evt.stopPropagation();
+        evt.preventDefault();
+        var files = evt.dataTransfer.files;// A FileList
+        for (var i = 0; i < files.length; i++) {// Load each one and trigger the callback
+          var f = files[i];
+          var reader = new FileReader();
+          reader.onload = makeLoader(f);
+          reader.readAsText(f);
+        }
+      },this);
+    }
+    return this;
+  };
+  function attachListener(ev, fxn, ctx){
+    var f = fxn.bind(ctx);
+    ctx.elt.addEventListener(ev, f, false);
+    ctx._events[ev] = f;
+  }
+  </script>
+  <style>
+  canvas {
+    border: dashed 3px black;
+    border-radius: 12px;
+  }
+  #contenedor {
+    width: 100%;
+    overflow-x: scroll;
+  }
+  #table {
+    margin: 195px auto 0 auto;
+    background: #D043FE;
+    border-radius: 8px;
+  }
+  td {
+    border: solid 1px #6C0747;
+    background: #F595D9;
+    color: #04002D;
+  }
+  </style>
+</head>
+<body onresize="resize();">
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Animation.html">Anterior</a></li>
+      <li><a href="Filter.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="drag"></div>
+  <div id="contenedor"><table id="table"></table></div>
+</body>
+</html>

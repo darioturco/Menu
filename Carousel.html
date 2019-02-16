@@ -1,0 +1,144 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Carousel</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var estado = 0;
+  var max = 5;
+  var imagenes;
+  var i = 0;
+  setTimeout(() => {
+    imagenes = document.getElementsByClassName("imagen");
+    max = imagenes.length;
+  },50);
+  function click_(derecha) {
+    if(derecha){
+      estado++;
+    }else{
+      estado--;
+    }
+    if(estado >= max){
+      estado = 0;
+    }else{
+      if(estado < 0){
+        estado = max-1;
+      }
+    }
+    rescala();
+  }
+  function rescala() {
+    let width = imagenes[0].offsetWidth;
+    for(i=0;i<max;i++){
+      imagenes[i].style.right = width*estado+"px";
+    }
+  }
+  </script>
+  <style>
+  body {
+    background: #eee;
+  }
+  #titulo {
+    width: 100%
+    padding: 0;
+    text-align: center;
+    color: #333;
+  }
+  #contenedor-all {
+    margin: 25px auto;
+    padding-bottom: 40%;
+    height: 0;
+    width: 40%;
+    box-sizing: content-box;
+    white-space: nowrap;
+    position: relative;
+  }
+  .flecha {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    height: 100%;
+    width: 10%;
+    background: rgb(20,20,20,0.4);
+    z-index: 5;
+    cursor: pointer;
+  }
+  #imagen-all {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #eee;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  .imagen {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    display: inline-block;
+    position: relative;
+    transition-duration: 0.5s;
+  }
+  .imagen > img {
+    width: 100%;
+    height: 100%;
+  }
+  .imagen > a {
+    position: relative;
+    bottom: 20%;
+    margin: auto;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: #7FFFD4;
+    z-index: 4;
+  }
+  </style>
+</head>
+<body onresize="rescala()">
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Change.html">Anterior</a></li>
+      <li><a href="Frame.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="titulo">Carousel</h1>
+  <div id="contenedor-all">
+    <div class="flecha" style="right: 0; border-radius: 0 12px 12px 0;" onclick="click_(true)">
+      <a>-></a>
+    </div>
+    <div class="flecha" style="left: 0; border-radius: 12px 0 0 12px;" onclick="click_(false)">
+      <a><-</a>
+    </div>
+    <div id="imagen-all">
+      <div class="imagen">
+        <img src="Images/Castillo_1.jpg" alt="Imagen 1"/>
+        <a>Imagen Nº1</a>
+      </div><!--
+      --><div class="imagen">
+        <img src="Images/Castillo_2.jpg" alt="Imagen 2"/>
+        <a>Imagen Nº2</a>
+      </div><!--
+      --><div class="imagen">
+        <img src="Images/Castillo_3.jpg" alt="Imagen 3"/>
+        <a>Imagen Nº3</a>
+      </div><!--
+      --><div class="imagen">
+        <img src="Images/Castillo_4.jpg" alt="Imagen 4"/>
+        <a>Imagen Nº4</a>
+      </div><!--
+      --><div class="imagen">
+        <img src="Images/Castillo_5.jpg" alt="Imagen 5"/>
+        <a>Imagen Nº5</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

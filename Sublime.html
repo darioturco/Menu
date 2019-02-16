@@ -1,0 +1,124 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Sublime</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var deslizador;
+  function apreta(par) {
+    document.getElementsByClassName("boton-sel")[0].className = "boton";
+    par.className = "boton-sel";
+    let lista = document.getElementsByClassName("images");
+    let num = lista.length;
+    for(let i=0 ; i<num ; i++){
+      lista[0].className = "images-anim";
+    }
+    setTimeout(() => {deslizador.style.top = (-500*(par.id-1))+"px";}, 1000);
+    setTimeout(() => {//despues de 3999 ms vuelve la clase a la normalidad
+      let list = document.getElementsByClassName("images-anim");
+      let num = list.length;
+      for(let i=0 ; i<num ; i++){
+        list[0].className = "images";
+      }
+    },3999);
+  }
+  setTimeout(() => {
+    deslizador = document.getElementById("delizador");
+  },50);
+  </script>
+  <style>
+  body {
+    background: #eee;
+  }
+  #contenedor-imagenes {
+    display: block;
+    margin: 25px auto;
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
+  #delizador {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    transition: 1s;
+  }
+  img {
+    display: block;
+    border: 3px solid #4021BF;
+    border-radius: 20px;
+    box-sizing: border-box;
+  }
+  .images {
+    animation: none;
+  }
+  .images-anim {
+    animation: trans 4s;
+    animation-timing-function: linear;
+  }
+  #controlador {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    margin-bottom: 25px;
+    height: 25px;
+    width: 250px;
+  }
+  #controlador div {
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #2B0375;
+    border-radius: 50%;
+    transition: 0.5s;
+  }
+  #controlador .boton {
+    background: #FAF3FF;
+  }
+  #controlador .boton-sel {
+    background: #BA56FF;
+  }
+  @keyframes trans {
+    0%{
+      transform: scale(1);
+    }
+    25%{
+      transform: scale(0.6);
+    }
+    75%{
+      transform: scale(0.6);
+    }
+    100%{
+      transform: scale(1);
+    }
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="List.html">Anterior</a></li>
+      <li><a href="Fractal.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor-imagenes">
+    <div id="delizador">
+      <img class="images" src="images/Castillo_1.jpg" alt="Castillo1" width="500px" height="500px"/>
+      <img class="images" src="images/Castillo_2.jpg" alt="Castillo2" width="500px" height="500px"/>
+      <img class="images" src="images/Castillo_3.jpg" alt="Castillo3" width="500px" height="500px"/>
+      <img class="images" src="images/Castillo_4.jpg" alt="Castillo4" width="500px" height="500px"/>
+      <img class="images" src="images/Castillo_5.jpg" alt="Castillo5" width="500px" height="500px"/>
+    </div>
+  </div>
+  <div id="controlador">
+    <div id="1" class="boton-sel" onclick="apreta(this);"></div>
+    <div id="2" class="boton" onclick="apreta(this);"></div>
+    <div id="3" class="boton" onclick="apreta(this);"></div>
+    <div id="4" class="boton" onclick="apreta(this);"></div>
+    <div id="5" class="boton" onclick="apreta(this);"></div>
+  </div>
+</body>
+</html>

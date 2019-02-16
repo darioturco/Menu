@@ -1,0 +1,105 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Monster</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var canv;
+  var div;
+  var pos;
+  var r;
+  function setup () {
+    div = document.getElementById("canvas");
+    canv = createCanvas(675,400);
+    canv.parent(div);
+    pos = createVector(random(1,canv.width),random(1,canv.height));
+    r = random(10,100);
+    console.log(pos.x);
+  }
+  function draw () {
+    background(0);
+    stroke(125);
+    fill(225);
+    ellipse(pos.x,pos.y,r);
+  }
+  </script>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: #eee;
+  }
+  #contenedor-all {
+    margin: 30px;
+    padding: 0;
+    display: block;
+  }
+  #canvas {
+    position: relative;
+    vertical-align: top;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+  }
+  canvas {
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+  }
+  img {
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    border-radius: 30px;
+  }
+  #columna {
+    width: 450px;
+    margin-left: 50px;
+    display: inline-block;
+  }
+  #imagen {
+    width: 250px;
+    height: 250px;
+    display: block;
+    border-radius: 50%;
+  }
+  h2 {
+    text-align: center;
+  }
+  #galeria {
+    margin: auto;
+    display: flex;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Slip.html">Anterior</a></li>
+      <li><a href="Change.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor-all">
+    <div id="canvas"></div>
+    <div id="columna">
+      <img id="imagen" src="images/Castillo_1.jpg" alt"Un castillo"/>
+      <h2>A Random Animation!!!</h2>
+      <p>
+        That is a random animation only, this is just a normal "p".
+        If you want to see something awesome done with css <a>click here</a>.
+      </p>
+      <div id="galeria">
+        <img src="images/Castillo_6.jpg" alt"Otro castillo"/>
+        <img src="images/Castillo_7.jpg" alt"Otro castillo"/>
+        <img src="images/Castillo_8.jpg" alt"Otro castillo"/>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

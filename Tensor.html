@@ -1,0 +1,113 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Tensor</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"> </script>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  const frame = 60;
+  const size_ = 500;
+  const learningR = 0.2;
+  const diviciones = 0.02;//0.005;
+  const optimizador = tf.train.sgd(learningR);
+  var canv = null;
+  var input = null;
+  var div = null;
+  var puntos_x = [], puntos_y = [], dibujaY = [], dibujaX = [];
+  var i = 0, j = 0, p = 0;
+  var degree = 2;
+  var coefficient = [];
+  function polynomial(x){
+    let y = tf.zeros([x.length]);
+    let tem;
+    for(p=0 ; p<=degree ; p++){
+      if(p == 0){
+        tem = tf.ones([x.length]);//a x lo elevo por p y lo guardo en tem
+      }else{
+        tem = tf.tensor1d(x).pow(p);
+      }
+      tem = tem.mul(coefficient[p]);//a tem lo multiplico por coefficient[p]
+      y = y.add(tem);//lo sumo a lo que y ya tenia
+    }
+    return y;
+  }
+  function loss(predic, labels){
+    return predic.sub(labels).square().mean();//calcula el error entre los puntos y la recta
+  }
+  function inicia(){
+    //se cambian las variables para tensorflow
+    //se cambian los coeficientes
+    //se reinician los coeficientes
+    coefficient = [];
+    for(j=0 ; j<=degree ; j++){
+      coefficient.push(tf.variable(tf.scalar(random(-1,1))));
+    }
+  }
+  function num_a_por_X(n){
+    let aux = map(n,0,size_,0,1);
+    return aux;
+  }
+  function por_a_num_X(n){
+    let aux  = map(n,1,0,size_,0);
+    return aux;
+  }
+  function num_a_por_Y(n){
+    let aux = map(n,0,size_,1,0);
+    return aux;
+  }
+  function por_a_num_Y(n){
+    let aux  = map(n,1,0,0,size_);
+    return aux;
+  }
+  function setup () {
+    frameRate(frame);
+    canv = createCanvas(size_,size_);
+    canv.position((windowWidth-size_)/2,canv.position().y);
+    canv.mousePressed(() => {
+      let x_ = num_a_por_X(mouseX);//map(mouseX,0,size_,0,1);//el valor mauseY va a estar entre 0 y size_ y el 0 lo manda al 0 y el size_ lo manda al 1
+      let y_ = num_a_por_Y(mouseY);//map(mouseY,0,size_,1,0);
+      puntos_x.push(x_);
+      puntos_y.push(y_);
+    });
+    background(0);
+    div = createDiv();
+    createP("Degree: ").parent(div);
+    input = createInput("","number").changed(() => {
+      let aux_value = parseInt(input.value());
+      if(aux_value > 0){
+        degree = aux_value;
+        inicia();
+      }
+    });
+    input.parent(div);
+    inicia();
+    for(j=0 ; j<=1 ; j+=diviciones){
+      dibujaX.push(j);
+    }
+  }
+  function draw () {
+    background(0);
+    if(puntos_x.length > 0){
+      tf.tidy(() => {optimizador.minimize(() => loss(polynomial(puntos_x),tf.tensor1d(puntos_y)));});
+    }
+    push();
+    fill(250);
+    noStroke();
+    for(i=0 ; i<puntos_x.length ; i++){
+      ellipse(por_a_num_X(puntos_x[i]),por_a_num_Y(puntos_y[i]),5);
+    } pop();push();
+    fill(0,255,0);
+    stroke(0,255,0);
+    tf.tidy(() => {dibujaY = polynomial(dibujaX).dataSync();});
+    for(i=1 ; i<dibujaX.length ; i++){
+      line(por_a_num_X(dibujaX[i-1]),por_a_num_Y(dibujaY[i-1]),por_a_num_X(dibujaX[i]),por_a_num_Y(dibujaY[i]));
+    }
+    pop();
+  }
+  </script>
+</head>
+<body>
+  <a href="Menu.html">Volver al menu</a>
+</body>
+</html>

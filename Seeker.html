@@ -1,0 +1,107 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Seeker</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  cir = true;
+  function Veiculo(){
+    this.pos = createVector(0,0);
+    this.vel = createVector(0,0);
+    this.acc = createVector(0,0);
+    this.max_vel = 3;
+    this.max_acc = 0.05;
+    this.r = 10;
+    this.Update = function(){
+      this.vel.add(this.acc);
+      this.vel.limit(this.max_vel);
+      this.pos.add(this.vel);
+      this.acc.mult(0);
+      push();
+      fill(250);
+      if(cir == true){
+        ellipse(this.pos.x,this.pos.y,25);
+      }else{
+        translate(this.pos.x, this.pos.y);
+        rotate(this.vel.heading() + PI/2);
+        beginShape();
+        vertex(0, -this.r * 2);
+        vertex(-this.r, this.r * 2);
+        vertex(this.r, this.r * 2);
+        endShape(CLOSE);
+      }
+      pop();
+    }
+    this.force = function(f){
+      this.acc.add(f);
+    }
+    this.seek = function(obj){
+      obj = p5.Vector.sub(obj,this.pos);
+      obj.normalize();
+      obj.setMag(this.max_vel);
+      obj = p5.Vector.sub(obj,this.vel);
+      obj.setMag(this.max_acc);
+      return obj;
+    }
+  }
+  function setup() {
+    canv = createCanvas(windowWidth-250,windowHeight-100);
+    canv.position((windowWidth-canv.width)/2,80);
+    canv.parent(document.getElementById("contenedor"));
+    noStroke();
+    mouse = createVector(mouseX,mouseY);
+    vari = new Veiculo();
+  }
+  function draw() {
+    background(0);
+    mouse.x = mouseX;
+    mouse.y = mouseY;
+    vari.force(vari.seek(mouse));
+    vari.Update();
+  }
+  function pressed_boton(){
+    cir = !cir;
+  }
+  </script>
+  <style >
+  html, body {
+    height: 100%;
+  }
+  #contenedor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  canvas {
+    margin: auto;
+    border-radius: 50px;
+  }
+  button {
+    background: #0D7E80;
+    border: none;
+    border-radius: 7px;
+    width: 6%;
+    height: 24px;
+    margin: 4px auto;
+    transition: 0.5s;
+  }
+  button:hover {
+    background: #7FFFD4;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Celulas.html">Anterior</a></li>
+      <li><a href="Follow.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor">
+    <button type="button" onclick="pressed_boton()">Shape</button>
+  </div>
+</body>
+</html>

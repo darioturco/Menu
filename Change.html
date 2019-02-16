@@ -1,0 +1,201 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Change</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var perillas = [null,null,null,null];
+  var circulo;
+  var colores = ["#000","#00f","#0f0","#0ff","#f00","#f0f","#ff0","#fff"];
+  var radio = 20;
+  setTimeout(() => {
+    perillas[0] = document.getElementsByClassName("color-ch");
+    perillas[1] = document.getElementsByClassName("radio-ch");
+    perillas[2] = document.getElementsByClassName("x-ch");
+    perillas[3] = document.getElementsByClassName("y-ch");
+    circulo = document.getElementById("circulo");
+  },50);
+  function elije(columna,fila) {
+    for(let i=0;i<perillas[columna].length;i++){
+      perillas[columna][i].style.borderColor = "black";
+      perillas[columna][i].style.boxShadow = "0 0 #000";
+    }
+    perillas[columna][fila].style.borderColor = "#15FFF4";
+    perillas[columna][fila].style.boxShadow = "5px 6px rgb(40,40,40,0.6)";
+    switch(columna){
+    case 0:
+      circulo.style.background = colores[fila];
+      break;
+    case 1:
+      radio = 20+20*fila;
+      circulo.style.width = radio+"px";
+      circulo.style.height = radio+"px";
+      break;
+    case 2:
+      circulo.style.marginLeft = fila*10+"%";
+      break;
+    case 3:
+      circulo.style.top = fila*10+"%";
+      break;
+    }
+  }
+  </script>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    weight: 100%;
+    height: 100%;
+  }
+  #contenedor-all {
+    margin: 35px;
+    weight: 100%;
+    height: 100%;
+  }
+  #perilla-all {
+    height: 500px;
+    border: 3px solid #0EE5D8;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0B696C;
+  }
+  .perilla {
+    margin: 2.5% 3%;
+    height: 87%;
+    width: 18%;
+    display: inline-block;
+    overflow: hidden scroll;
+    vertical-align: top;
+    background: #9319B6;
+    border-radius: 7px;
+  }
+  .perilla > div {
+    margin: 10%;
+    padding: 0;
+    weight: 80%;
+    height: 0;
+    padding-bottom: 80%;
+    position: relative;
+    border-radius: 10px;
+    background: #aaa;
+    border: 3px solid #000;
+  }
+  .perilla > div a {
+    margin: 25% 0;
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    text-align: center;
+    font-size: 250%;
+  }
+  #color div:nth-child(1) {background: #000;}
+  #color div:nth-child(2) {background: #00f;}
+  #color div:nth-child(3) {background: #0f0;}
+  #color div:nth-child(4) {background: #0ff;}
+  #color div:nth-child(5) {background: #f00;}
+  #color div:nth-child(6) {background: #f0f;}
+  #color div:nth-child(7) {background: #ff0;}
+  #color div:nth-child(8) {background: #fff;}
+  #radio > div {
+    background: #25DBC8;
+  }
+  #x > div {
+    background: #25DB62;
+  }
+  #y > div {
+    background: #C5DB25;
+  }
+  #perilla-all ::-webkit-scrollbar {
+    width: 9px;
+  }
+  #perilla-all ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 0 7px 7px 0;
+  }
+  #perilla-all ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 7px;
+  }
+  #perilla-all ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  #canvas {
+    margin: 50px 0;
+    height: 500px;
+    border-radius: 2px;
+    overflow: visible;
+    background: #333;
+  }
+  #circulo {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 20px;
+    width: 20px;
+    background: #000;
+    border-radius: 50%;
+    float: left;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Monster.html">Anterior</a></li>
+      <li><a href="Carousel.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor-all">
+    <div id="perilla-all">
+      <div id="color" class="perilla">
+        <div class="color-ch" onclick="elije(0,0)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,1)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,2)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,3)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,4)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,5)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,6)"><a></a></div>
+        <div class="color-ch" onclick="elije(0,7)"><a></a></div>
+      </div>
+      <div id="radio" class="perilla">
+        <div class="radio-ch" onclick="elije(1,0)"><a>20</a></div>
+        <div class="radio-ch" onclick="elije(1,1)"><a>40</a></div>
+        <div class="radio-ch" onclick="elije(1,2)"><a>60</a></div>
+        <div class="radio-ch" onclick="elije(1,3)"><a>80</a></div>
+        <div class="radio-ch" onclick="elije(1,4)"><a>100</a></div>
+      </div>
+      <div id="x" class="perilla">
+        <div class="x-ch" onclick="elije(2,0)"><a>0%</a></div>
+        <div class="x-ch" onclick="elije(2,1)"><a>10%</a></div>
+        <div class="x-ch" onclick="elije(2,2)"><a>20%</a></div>
+        <div class="x-ch" onclick="elije(2,3)"><a>30%</a></div>
+        <div class="x-ch" onclick="elije(2,4)"><a>40%</a></div>
+        <div class="x-ch" onclick="elije(2,5)"><a>50%</a></div>
+        <div class="x-ch" onclick="elije(2,6)"><a>60%</a></div>
+        <div class="x-ch" onclick="elije(2,7)"><a>70%</a></div>
+        <div class="x-ch" onclick="elije(2,8)"><a>80%</a></div>
+        <div class="x-ch" onclick="elije(2,9)"><a>90%</a></div>
+        <div class="x-ch" onclick="elije(2,10)"><a>100%</a></div>
+      </div>
+      <div id="y" class="perilla">
+        <div class="y-ch" onclick="elije(3,0)"><a>0%</a></div>
+        <div class="y-ch" onclick="elije(3,1)"><a>10%</a></div>
+        <div class="y-ch" onclick="elije(3,2)"><a>20%</a></div>
+        <div class="y-ch" onclick="elije(3,3)"><a>30%</a></div>
+        <div class="y-ch" onclick="elije(3,4)"><a>40%</a></div>
+        <div class="y-ch" onclick="elije(3,5)"><a>50%</a></div>
+        <div class="y-ch" onclick="elije(3,6)"><a>60%</a></div>
+        <div class="y-ch" onclick="elije(3,7)"><a>70%</a></div>
+        <div class="y-ch" onclick="elije(3,8)"><a>80%</a></div>
+        <div class="y-ch" onclick="elije(3,9)"><a>90%</a></div>
+        <div class="y-ch" onclick="elije(3,10)"><a>100%</a></div>
+      </div>
+    </div>
+    <div id="canvas">
+      <div id="circulo"></div>
+    </div>
+  </div>
+</body>
+</html>

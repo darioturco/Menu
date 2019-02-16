@@ -1,0 +1,18 @@
+body {
+  background: #253;
+  font-family: sans-serif;
+}
+#p_1 {
+  background: red;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+#p_2 {
+  background: green;
+  color: grey;
+}
+#p_3 {
+  background: blue;
+  color: black;
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Gravity</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var masa, radio, grave;
+  var r, m;
+  const G = 6.674e-11;
+  function cambia(){
+    m = convert(masa.value());//en [kg]
+    r = convert(radio.value());//en [m]
+    aux = (G * m) / (r * r);
+    grave.html("La gravedad del planeta es:   " + aux + " m/s<sup>2</sup>");
+  }
+  function convert(str){
+    let temp = parseInt(str);
+    for(let i=0;i<str.length;i++){
+      if(str[i] == "e" || str[i] == "E" || str[i] == "^"){
+        temp = str.slice(i+1);
+        temp = parseInt(str) * Math.pow(10,parseInt(temp));
+        break;
+      }
+    }
+    return temp;
+  }
+  function setup() {
+    noCanvas();
+    let contenedor = document.getElementById("contenedor");
+    let p = createP("Masa [kg]:").parent(contenedor);
+    masa = createInput("1","number").position(p.position().x+75,p.position().y);
+    masa.changed(cambia);
+    masa.id("masa");
+    p = createP("Radio [m]:").parent(contenedor);
+    radio = createInput("1","number").position(p.position().x+75,p.position().y);
+    radio.changed(cambia);
+    radio.id("radio");
+    grave = createP("La gravedad del planeta es:   ").parent(contenedor);//en [m/s2]
+    cambia();
+  }
+  </script>
+  <style>
+  body {
+    background: #ccc;
+  }
+  #contenedor {
+    margin: 25px auto;
+    width: 400px;
+    height: 400px;
+    overflow: visible;
+    background: #B5B87F;
+    border: 3px solid black;
+    border-radius: 9px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Static.html">Anterior</a></li>
+      <li><a href="Perceptron.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor"></div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Filter</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var image, ranges;
+  setTimeout(() => {
+    image = document.getElementById("image");
+    ranges = document.getElementsByClassName("input");
+  }, 50);
+  function cambio(t) {
+    image.style.WebkitFilter = "";
+    for(let i=0;i<ranges.length;i++){
+      switch (ranges[i].id) {
+      case "blur":
+        image.style.WebkitFilter += "blur(" + ranges[i].value + "px)";
+        break;
+      case "brightness":
+        image.style.WebkitFilter += "brightness(" + (100 - ranges[i].value) + "%)";
+        break;
+      case "contrast":
+        image.style.WebkitFilter += "contrast(" + (100 - ranges[i].value) + "%)";
+        break;
+      case "grayscale":
+        image.style.WebkitFilter += "grayscale(" + ranges[i].value + "%)";
+        break;
+      case "hue-rotate":
+        image.style.WebkitFilter += "hue-rotate(" + ranges[i].value + "deg)";
+        break;
+      case "invert":
+        image.style.WebkitFilter += "invert(" + ranges[i].value + "%)";
+        break;
+      case "saturate":
+        image.style.WebkitFilter += "saturate(" + (100 - ranges[i].value) + "%)";
+        break;
+      case "opacity":
+        image.style.WebkitFilter += "opacity(" + (100 - ranges[i].value) + "%)";
+        break;
+      case "sepia":
+        image.style.WebkitFilter += "sepia(" + ranges[i].value + "%)";
+        break;
+      }
+    }
+  }
+  </script>
+  <style>
+  #contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #9CE5F9;
+    width: 75%;
+    height: 500px;
+    margin: 50px auto;
+    border: solid 3px #0B4CAB;
+    border-radius: 50px;
+  }
+  img {
+    width: 50%;
+    height: 100%;
+    transform: scale(0.8);
+    margin: auto 0;
+    filter: none;
+    border-radius: 10px;
+  }
+  #selector {
+    display: inline;
+    flex-direction: column;
+    justify-content: space-around;
+    background: #40D6F4;
+    width: 35%;
+    height: 80%;
+    margin: auto 0;
+    border-radius: 16px;
+    border: solid 2px #135ECB;
+  }
+  .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 80%;
+    height: 25px;
+    margin: 16px auto;
+    font-size: 1.2em;
+  }
+  .option p {
+    width: 25%;
+    color: #01063B;
+  }
+  .input {
+    width: 50%;
+    height: 100%;
+    margin: 0;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Csv.html">Anterior</a></li>
+      <li><a href="Sort.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor">
+    <img id="image" src="images/Castillo_7.jpg" alt="A castle"/>
+    <div id="selector">
+      <div class="option"><p>Blur</p><input class="input" id="blur" type="range" min=0 max=20 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Brightness</p><input class="input" id="brightness" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Contrast</p><input class="input" id="contrast" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Grayscale</p><input class="input" id="grayscale" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Hue</p><input class="input" id="hue-rotate" type="range" min=0 max=359 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Invert</p><input class="input" id="invert" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Saturate</p><input class="input" id="saturate" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Opacity</p><input class="input" id="opacity" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+      <div class="option"><p>Sepia</p><input class="input" id="sepia" type="range" min=0 max=100 value=0 onChange="cambio(this);"/></div>
+    </div>
+  </div>
+</body>
+</html>

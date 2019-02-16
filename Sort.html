@@ -1,0 +1,112 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Sort</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var values = [];
+  var p, canv;
+  var mensaje = "Visualisation sorting algorithm.   ";
+  var inicio = 0, weight = 9;
+  var ordena = true;
+  const esp = 20, cant = 50;
+  function setup() {
+    canv = createCanvas(500,500);
+    canv.parent(document.getElementById("canvas"));
+    background(0);
+    strokeWeight(weight);
+    stroke(255);
+    p = document.getElementById("lineal");
+    inicia();
+    resize();
+    frameRate(50);
+    setInterval(() => {
+      p.innerHTML = "";
+      for(let i=0, pun ; i<esp ; i++){
+        pun = inicio+i
+        if(pun >= mensaje.length){
+          pun -= mensaje.length;
+        }
+        p.innerHTML += mensaje[pun];
+      }
+      inicio++;
+      if(inicio >= mensaje.length){
+        inicio = 0;
+      }
+    }, 150);
+  }
+  function draw() {
+    weight = canv.width/cant;
+    for(let x = 0 ; x<values.length-1 ; x++){
+      for(let y = x+1 ; y<values.length ; y++){
+        if(values[x] > values[y]){//hace un paso extra para ordenar
+          let swap = values[x];
+          values[x] = values[y];
+          values[y] = swap;
+          x = Infinity;
+          break;
+        }
+      }
+    }
+    background(0);
+    for(let i=0, pun ; i<cant ; i++){
+      line(weight/2+weight*i,0,weight/2+weight*i,values[i]*canv.height-1);
+    }
+  }
+  function inicia(){
+    values = [];
+    for(let i = 0 ; i<cant ; i++){
+      values.push(random());
+    }
+  }
+  function resize() {
+    canv.size(windowWidth-windowWidth*0.3,500);
+  }
+  </script>
+  <style>
+  body {
+    background: #eee;
+  }
+  #contenedor {
+    width: 100%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+  }
+  #contenedor > * {
+    margin: auto;
+  }
+  canvas {
+    border-radius: 5px 30px 3px 30px;
+  }
+  #boton {
+    background: #0FA7AA;
+    border: none;
+    border-radius: 7px;
+    width: 50px;
+    height: 25px;
+    margin: 4px auto;
+    transition: 0.5s;
+  }
+  #boton:hover {
+    background: #7FFFD4;
+  }
+  </style>
+</head>
+<body onResize="resize()">
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Filter.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="contenedor">
+    <h1 id="lineal"></h1>
+    <input id="boton" type="button" value="Reset" onClick="inicia();">
+    <div id="canvas"></div>
+  </div>
+</body>
+</html>

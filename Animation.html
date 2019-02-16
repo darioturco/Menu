@@ -1,0 +1,218 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Animation</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+    setTimeout(() => {
+      let aux = document.getElementsByClassName("anim");
+      for(let i=0;i<aux.length;i++){
+        aux[i].addEventListener("animationend", () => {
+          aux[i].classList.remove(aux[i].id);
+          aux[i].classList.add("nada");
+        });
+      }
+    },50);
+    function apreta(bot) {
+      let div = document.getElementById("anim_" + bot.id);
+      div.classList.remove("nada");
+      div.classList.add("anim_" + bot.id);
+    }
+  </script>
+  <style>
+    #cadena {
+      width: 65%;
+      height: 500px;
+      margin: auto;
+      margin-top: 25px;
+      background: #C0FDED;
+      overflow-y: scroll;
+      border-radius: 35px;
+    }
+    .eslabon {
+      width: 72%;
+      height: 150px;
+      margin: 20px auto;
+      background: #9AFED5;
+      border-radius: 30px;
+      border: 2px solid #15E691;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    .trio {
+      width: 25%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .anim {
+      border-radius: 12px;
+      background: #F7318B;
+    }
+    button {
+      width: 70px;
+      height: 43px;
+      border-radius: 15px;
+      border-color: #E6BAFF #A200FF #A200FF #E6BAFF;
+      background: #C769FD;
+      box-shadow: none;
+      transition: 1s;
+    }
+    button:focus {
+      outline: none;
+    }
+    button:active{
+        border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
+        box-shadow: -1px -1px 5px #999;
+    }
+    button:hover{
+      background: #B750F3;
+      box-shadow: 4px 3px 9px #555;
+    }
+    .label {
+      text-shadow: 3px 2px 5px black;
+      font-size: 1.25em;
+    }
+    #nada {
+      animation: none;
+    }
+    .anim_0 {
+      animation: 2s anim_0 1;
+    }
+    .anim_1 {
+      animation: 1.5s anim_1 1;
+    }
+    .anim_2 {
+      animation: 1.5s anim_2 1;
+    }
+    .anim_3 {
+      animation: 2.5s anim_3 1;
+    }
+    .anim_4 {
+      animation: 1.5s anim_4 1;
+    }
+    .anim_5 {
+      animation: 2s anim_5 1;
+    }
+    .anim_6 {
+      animation: 2s anim_6 1;
+    }
+    .anim_7 {
+      animation: 2s anim_7 1;
+    }
+    @keyframes anim_0 {
+      from{background: #F7318B;}
+      50% {background: #31F79D;}
+      to  {background: #F7318B;}
+    }
+    @keyframes anim_1 {
+      from{border-radius: 12px;}
+      50% {border-radius: 50%;}
+      to  {border-radius: 12px;}
+    }
+    @keyframes anim_2 {
+      from{transform: scale(1) rotate(0deg);}
+      50% {transform: scale(0.5) rotate(180deg);}
+      to  {transform: scale(1) rotate(360deg);}
+    }
+    @keyframes anim_3 {
+      from{transform: scale(1) skewX(0deg);}
+      25% {transform: scale(0.75) skewX(45deg);}
+      75% {transform: scale(0.75) skewX(-45deg);}
+      to  {transform: scale(1) skewX(0deg);}
+    }
+    @keyframes anim_4 {
+      from{opacity: 1; transform-origin: center top; transform: rotateX(0deg);}
+      40% {opacity: 0.05; transform: rotateX(90deg);}
+      60% {opacity: 0.05; transform: rotateX(90deg);}
+      to  {opacity: 1; transform-origin: center top; transform: rotateX(0deg);}
+    }
+    @keyframes anim_5 {
+      from{opacity: 1; transform: scale(1);}
+      40% {opacity: 0; transform: scale(0);}
+      60% {opacity: 0; transform: scale(1);}
+      to  {opacity: 1; transform: scale(1);}
+    }
+    @keyframes anim_6 {
+      from{opacity: 1; transform-origin: left center; transform: scaleX(1);}
+      40% {opacity: 0; transform-origin: left center; transform: scaleX(0);}
+      60% {opacity: 0; transform-origin: right center; transform: scaleX(0);}
+      to  {opacity: 1; transform-origin: right center; transform: scaleX(1);}
+    }
+    @keyframes anim_7 {
+      from{border-radius: 12px; transform: scale(1);}
+      40% {border-radius: 50%; transform: scale(0.3);}
+      60% {border-radius: 50%; transform: scale(0.3) rotate(90deg);}
+      to  {border-radius: 12px; transform: scale(1) rotate(0deg);}
+    }
+    ::-webkit-scrollbar {
+      width: 9px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #22DCCE;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #167D90;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0B696C;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Fractal.html">Anterior</a></li>
+      <li><a href="Csv.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="titulo"><center>Chose a animation</center></h1>
+  <div id="cadena">
+    <div class="eslabon">
+      <div id="anim_0" class="trio anim nada"></div>
+      <div class="trio"><button id="0" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Color</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_1" class="trio anim nada"></div>
+      <div class="trio"><button id="1" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Border</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_2" class="trio anim nada"></div>
+      <div class="trio"><button id="2" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Round</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_3" class="trio anim nada"></div>
+      <div class="trio"><button id="3" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Skew</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_4" class="trio anim nada"></div>
+      <div class="trio"><button id="4" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Open</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_5" class="trio anim nada"></div>
+      <div class="trio"><button id="5" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Fade</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_6" class="trio anim nada"></div>
+      <div class="trio"><button id="6" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Side</p></div>
+    </div>
+    <div class="eslabon">
+      <div id="anim_7" class="trio anim nada"></div>
+      <div class="trio"><button id="7" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="trio"><p class="label">Ball</p></div>
+    </div>
+  </div>
+</body>
+</html>

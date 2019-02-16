@@ -1,0 +1,82 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Entrada</title>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  var entrada;
+  var salida;
+  var c = 10;
+  var vec1 = createVector(48,122);
+  var vec2 = createVector(47,64);
+  var vec3 = createVector(58,122);
+  var vec4 = createVector(0,254);
+  var vec5 = createVector(48,57);
+  var vec6 = createVector(1,255);
+  function setup() {
+    noCanvas();
+    entrada = createInput("0","number");
+    salida = createP("");
+  }
+  function ra(cant = 10){
+    let aux = "";
+    for(let i=0;i<cant;i++){
+      aux = aux.concat(String.fromCharCode(random(48,122)));
+    }
+    return aux;
+  }
+  function click_(){
+    let ent = entrada.value();
+    let cod = ent[ent.length-1];
+    let aux = "";
+    console.log(cod);//borrar
+    ent = parseInt(ent.slice(0,ent.length-2));
+    console.log(ent);//borrar
+    if(Math.floor(Math.random()*100+25) < 45){
+      salida.html(ra());
+      return;
+    }
+    switch (cod.length) {
+    case 1:
+      switch (ent) {
+      case 1:
+        
+        break;
+      case 2:
+
+        break;
+      case 3:
+
+        break;
+      case 4:
+
+        break;
+      case 5:
+
+        break;
+      case 6:
+
+        break;
+        default:
+        salida.html(ra());
+      }
+      break;
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+      default:
+      salida.html(ra());
+    }
+  }
+  </script>
+</head>
+<body>
+  <center>
+    <a href="Menu.html">Volver al menu</a>
+  </center>
+  <button Id="boton" type="button" onclick="click_()">Boton</button>
+</body>
+</html>
