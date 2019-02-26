@@ -4,37 +4,74 @@
   <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script>
-  var url = "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
-  var info;
+  const url = "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=";
   var input_, output_;
   function setup() {
-    input_ = document.getElementById("Entrada");
-    output_ = document.getElementById("Salida");
+    input_ = document.getElementById("input");
+    output_ = document.getElementById("output");
   }
   function pressed_boton() {
     loadJSON(url+input_.value,gotData,'jsonp');
   }
   function gotData(data){
-    data_ = data;
-    //console.log(data_);
-    info = "";
+    let info = "";
     output_.innerHTML = "";
-    for(i=0;i<data_[2].length;i++){
-      info = info + "\n" + data_[2][i];
+    for(i=0;i<data[2].length;i++){
+      info = info + "\n" + data[2][i];
     }
     output_.innerHTML = info;
   }
   </script>
+  <style>
+  h1 {
+    margin: 20px auto;
+    text-align: center;
+  }
+  input {
+    width: 16%;
+    margin: 20px auto;
+    display: block;
+  }
+  button {
+    background: #5FBF9F;
+    border: none;
+    border-radius: 7px;
+    width: 9%;
+    height: 25px;
+    margin: 20px auto;
+    display: block;
+    transition: 0.5s;
+  }
+  button:hover {
+    background: #7FFFD4;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:active{
+      border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
+      box-shadow: 1px 1px 5px #999;
+      transform: scale(0.95);
+  }
+  #output {
+    margin: 5px 10%;
+    line-height: 27px;
+  }
+  </style>
 </head>
 <body>
-  <center>
-    <a href="Menu.html">Volver al menu</a>
-    <h1 id="Titulo">Enter a search in wikipedia.</h1>
-    <br>
-    <input id="Entrada" type="input"></input>
-    <button type="button" onclick="pressed_boton()">Search</button>
-    <p id="Salida"></p>
-  </center>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Clock.html">Anterior</a></li>
+      <li><a href="Pi.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="title">Enter a search for wikipedia.</h1>
+  <input id="input" type="input" placeholder="Write a word"></input>
+  <button onclick="pressed_boton()">Search</button>
+  <p id="output"></p>
 </body>
 </html>

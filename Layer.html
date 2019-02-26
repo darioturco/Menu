@@ -2,7 +2,7 @@
 <head>
   <title>Layer</title>
   <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
-  <style>dev{padding: 25px; margin: 25px;}</style>
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
   <script>
@@ -49,7 +49,6 @@
     }
   }
   function set_train(){
-
     for(var j=0;j<puntos.length;j++){
       per.train(puntos[j],puntos[j].val);
     }
@@ -57,6 +56,7 @@
   function setup() {
     canv = createCanvas(size_,size_);
     canv.mousePressed((event) => {puntos.push(new Punto(mouseX,mouseY));set_train();});
+    canv.parent(document.getElementById("container"));
     per = new Perceptron();
     for(x=0;x<cant;x++){
       puntos.push(new Punto(random(0,size_),random(0,size_)));
@@ -79,12 +79,30 @@
     }
   }
   </script>
+  <style>
+  body {
+    height: 100%;
+    width: 100%;
+    background: #bbb;
+  }
+  #container {
+    margin: 55px auto;
+    display: block;
+  }
+  canvas {
+    margin: auto;
+    display: block;
+  }
+  </style>
 </head>
 <body>
-  <center id="center">
-    <a href="Menu.html">Volver al menu</a>
-    <br>
-    <button type="button" onclick="pressed_boton()">Clear</button>
-  </center>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Perceptron.html">Anterior</a></li>
+      <li><a href="Tensor.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container"></div>
 </body>
 </html>

@@ -3,24 +3,22 @@
   <title>PI</title>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script>
   var cont = 0, cont_in = 0;
   var normas = [];
   var par;
-
   function setup() {
     canv = createCanvas(windowHeight-140,windowHeight-140);
-    canv.position((windowWidth-canv.width)/2,70);
-    par = document.getElementById("Resp");
+    canv.position((windowWidth-canv.width)/2,120);
+    par = document.getElementById("resp");
     background(0);
     strokeWeight(1);
     stroke(255);
     noFill();
     ellipse(canv.width/2,canv.height/2,canv.width);
-
   }
   function draw() {
-    //if(cont < 500){
     cont++;
     cor = {x: random(canv.width), y: random(canv.height)};
     if(Math.sqrt(cor.x*cor.x+cor.y*cor.y) < canv.width){
@@ -32,14 +30,19 @@
     }else{
       par.innerHTML = 4*(cont_in/cont);
     }
-    //}
   }
   </script>
 </head>
 <body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Json.html">Anterior</a></li>
+      <li><a href="Binary.html">Siguiente</a></li>
+    </ul>
+  </header>
   <center>
-    <a href="Menu.html">Volver al menu</a>
-    <p id="Resp"></p>
+    <h1 id="resp"></h1>
   </center>
 </body>
 </html>

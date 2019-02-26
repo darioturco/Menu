@@ -2,12 +2,13 @@
 <head>
   <title>Maze</title>
   <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
   <script>
-  var vel = 16;
-  var tam = 800;
-  var cant = 20;
+  const vel = 32;
+  const tam = 800;
+  const cant = 20;
   var raz = 1;
   var cells = [], aux_cell = [], stack = [];
   var pun = 0, prox = 1;
@@ -70,8 +71,10 @@
     return 0;
   }
   function the_end(){
-    console.log("The End");
     noLoop();
+  }
+  function resize(){
+    canv.position((windowWidth-canv.width)/2,80);
   }
   function setup() {
     raz = tam/cant;
@@ -83,6 +86,7 @@
       }
     }
     cells[0].vis = false;
+    resize();
   }
   function draw() {
     background(0);
@@ -114,9 +118,13 @@
   }
   </script>
 </head>
-<body>
-  <center>
-    <a href="Menu.html">Volver al menu</a>
-  </center>
+<body onResize="resize();" style="background:#CCC;">
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Binary.html">Anterior</a></li>
+      <li><a href="Words.html">Siguiente</a></li>
+    </ul>
+  </header>
 </body>
 </html>

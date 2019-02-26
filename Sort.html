@@ -6,12 +6,12 @@
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
   <script>
+  const esp = 20, cant = 50;
   var values = [];
   var p, canv;
   var mensaje = "Visualisation sorting algorithm.   ";
   var inicio = 0, weight = 9;
   var ordena = true;
-  const esp = 20, cant = 50;
   function setup() {
     canv = createCanvas(500,500);
     canv.parent(document.getElementById("canvas"));
@@ -88,10 +88,18 @@
     width: 50px;
     height: 25px;
     margin: 4px auto;
-    transition: 0.5s;
+    transition: 0.75s;
   }
   #boton:hover {
     background: #7FFFD4;
+  }
+  #boton:focus {
+    outline: none;
+  }
+  #boton:active{
+      border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
+      box-shadow: 1px 1px 6px #9A9;
+      transform: scale(0.96);
   }
   </style>
 </head>
