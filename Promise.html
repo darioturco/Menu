@@ -1,0 +1,187 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Promise</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var lineas = [];
+  var container_list;
+  function Line (pri){
+    this.id = get_id();
+    this.linea = pri;
+    this.name = pri.childNodes[1];
+    this.note = pri.childNodes[3];
+    this.time = pri.childNodes[5];
+    this.name.value = "";
+    this.note.value = "";
+    this.time.value = "";
+    this.disabled = (val) => {
+      this.name.disabled = val;
+      this.note.disabled = val;
+      this.time.disabled = val;
+    }
+  }
+  async function pressed_button() {
+    let last = lineas.length-1;
+    let tim = parseInt(lineas[last].time.value);
+    if(lineas[last].name.value != "" && !isNaN(tim)){//if you can create the linea...
+      let new_line = lineas[last].linea.cloneNode(true);
+      container_list.appendChild(new_line);
+      lineas.push(new Line(new_line));
+      lineas[last].disabled(true);
+      promise_f(tim, lineas[last].note.value, lineas[last].id);//Hace la promesa de llamar la alarma
+    }
+  }
+  function promise_f(tim, not, id){
+    return new Promise((res, rej) => {
+      setTimeout(function(){
+        console.log(not);
+        alert(not);
+        delete_linea(id);
+        res();
+      }, tim);
+    });
+  }
+  function get_id(){
+    let igual = false;
+    let num = 1;
+    do {
+      num = Math.floor(Math.random()*10000);
+      igual = false;
+      for(let i=0 ; i<lineas.length ; i++){
+        if(num == lineas[i].id){
+          igual = true;
+          break;
+        }
+      }
+    } while(igual);
+    return num;
+  }
+  function delete_linea(id){
+    for(let i=0 ; i<lineas.length ; i++){
+      if(lineas[i].id == id){//elimina esa linea
+        container_list.removeChild(lineas[i].linea);
+        lineas.splice(i,1);
+        break;
+      }
+    }
+  }
+  setTimeout(() => {
+    container_list = document.getElementById("list");
+    lineas.push(new Line(document.getElementById("linea")));
+  }, 50);
+  </script>
+  <style>
+  html, body {
+    height: 100%;
+    background: whitesmoke;
+  }
+  #container {
+    margin: 0 5%;
+    margin-top: 30px;
+    background: #7BFFD4;
+    border-radius: 30px 30px 20px 20px;
+  }
+  #tittles {
+    background: #DDFFFB;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 30px 30px 0 0;
+  }
+  #list {
+    height: 400px;
+    weight: 90%;
+    margin: 0;
+    padding: 10px;
+    background: #7BFFD4;
+    overflow-y: auto;
+  }
+  .linea {
+    background: #A37BFF;
+    width: 100%;
+    height: 36px;
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-around;
+    border: 2px solid #6C2CFF;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .linea > input {
+    margin: auto;
+    width: 16%;
+    height: 20px;
+  }
+  #buttons {
+    height: 42px;
+    weight: 100%;
+    padding-top: 10px;
+    background: #55B696;
+    border-radius: 0 0 20px 20px;
+  }
+  #buttons > button {
+    width: 65px;
+    height: 32px;
+    margin: auto;
+    display: block;
+    background: #7A5CBF;
+    border: 2px solid #6C2CFF;
+    border-radius: 5px;
+    transition: 0.6s;
+  }
+  #buttons > button:hover {
+    background: #31CDA9;
+    border: 2px solid darkslategray;
+  }
+  #buttons > button:focus {
+    outline: none;
+  }
+  #buttons > button:active {
+    box-shadow: 1px 1px 6px #9A9;
+    transform: scale(1.05);
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Grid.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <div id="tittles">
+      <h2>Name:</h2>
+      <h2>Note:</h2>
+      <h2>Time:</h2>
+    </div>
+    <div id="list">
+      <div id="linea" class="linea">
+        <input id="name" class="name"/>
+        <input id="note" class="note"/>
+        <input id="time" class="time" type="number"/>
+      </div>
+    </div>
+    <div id="buttons">
+      <button onclick="pressed_button();">Create</button>
+    </div>
+  </div>
+</body>
+</html>

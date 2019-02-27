@@ -130,17 +130,17 @@
     lin.name.disabled = false;
   }
   function cambia_nombre(div) {
-      if(div.value != ""){
-        div.disabled = true;
-        if(div.id == linea[linea.length-1].div.id){
-          crea_una_lista_mas();
-        }
-        if(selec != -1){
-          let num = get_position(div.parentNode.id);
-          pri[selec][linea[num].name.value] = linea[num].value.value;//escibe el valor
-          escribe_propiedades(selec);
-        }
+    if(div.value != ""){
+      div.disabled = true;
+      if(div.id == linea[linea.length-1].div.id){
+        crea_una_lista_mas();
       }
+      if(selec != -1){
+        let num = get_position(div.parentNode.id);
+        pri[selec][linea[num].name.value] = linea[num].value.value;//escibe el valor
+        escribe_propiedades(selec);
+      }
+    }
   }
   function cambia_valor(div) {
     num = get_position(div.parentNode.id);
