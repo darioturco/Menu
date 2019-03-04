@@ -1,0 +1,166 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Tone</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../Tone.js"></script>
+  <script>
+  const synth = new Tone.Synth().toMaster();
+  function apreta(bot){
+    let id_ = parseInt(bot.id);
+    switch (id_) {
+    case 0:
+      synth.triggerAttackRelease("C0", 0.5);
+      break;
+    case 1:
+      synth.triggerAttackRelease("C1", 0.5);
+      break;
+    case 2:
+      synth.triggerAttackRelease("C2", 0.5);
+      break;
+    case 3:
+      synth.triggerAttackRelease("C3", 0.5);
+      break;
+    case 4:
+      synth.triggerAttackRelease("C4", 0.5);
+      break;
+    case 5:
+      synth.triggerAttackRelease("C5", 0.5);
+      break;
+    case 6:
+      synth.triggerAttackRelease("C6", 0.5);
+      break;
+    case 7:
+      synth.triggerAttackRelease("C7", 0.5);
+      break;
+    case 8:
+      synth.triggerAttackRelease("A4", 0.5);
+      break;
+    case 9:
+      synth.triggerAttackRelease("B4", 0.5);
+      break;
+    }
+  }
+  </script>
+  <style>
+  #cadena {
+    width: 65%;
+    height: 500px;
+    margin: auto;
+    margin-top: 25px;
+    background: #C0FDED;
+    overflow-y: scroll;
+    border-radius: 35px;
+  }
+  .eslabon {
+    width: 72%;
+    height: 125px;
+    margin: 20px auto;
+    background: #9AFED5;
+    border-radius: 30px;
+    border: 2px solid #15E691;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .duo {
+    width: 25%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  button {
+    width: 70px;
+    height: 43px;
+    border-radius: 15px;
+    border-color: #E6BAFF #A200FF #A200FF #E6BAFF;
+    background: #C769FD;
+    box-shadow: none;
+    transition: 1s;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:active{
+      border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
+      box-shadow: -1px -1px 5px #999;
+  }
+  button:hover{
+    background: #B750F3;
+    box-shadow: 4px 3px 9px #555;
+  }
+  .label {
+    text-shadow: 3px 2px 5px black;
+    font-size: 1.25em;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Promise.html">Anterior</a></li>
+      <li><a href="Melody.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="titulo"><center>Chose a sound</center></h1>
+  <div id="cadena">
+    <div class="eslabon">
+      <div class="duo"><button id="0" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 1</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="1" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 2</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="2" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 3</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="3" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 4</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="4" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 5</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="5" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 6</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="6" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 7</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="7" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 8</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="8" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 9</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="9" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Sound 10</p></div>
+    </div>
+  </div>
+</body>
+</html>

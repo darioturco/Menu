@@ -1,0 +1,92 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Melody</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../Tone.js"></script>
+  <script>
+  const synth = new Tone.Synth().toMaster();
+  const info = false;//if show the info from each note
+  const load_text = true;
+  var texto = "F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.5-F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.5-F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.05-E5-0.2-X-0.05-D5-0.5";//"C4_2.5_C5 2.5-C4-2.3\nC5-0.7";
+  var notas = [];
+  function pressMouse(){
+    if(load_text){
+      texto = document.getElementById("text").value;
+    }
+    let values = texto.split(/\-|\/|\;| |_|\n/);
+    if(values.length >= 2 && values.length%2 == 0){//solo entra si hay almenos 1 nota y si cada nota tiene su tiempo
+      notas = [];
+      for(let i=0 ; i<values.length ; i+=2){
+        notas.push({note: values[i], time: parseFloat(values[i+1])});
+      }
+      touch(50);
+    }
+  }
+  function touch(off = 0){//off = initial offset time in miliseconds
+    let time = off/1000;//Start...
+    for(let i = 0 ; i<notas.length ; i++){
+      setTimeout(() => {
+        if(info){//Muestra la info de la nota ???
+          console.log("Note: " + notas[i].note + " ; " + "Time: " + notas[i].time);
+        }
+        if(!(notas[i].note == 'x' || notas[i].note == 'X')){
+          synth.triggerAttackRelease(notas[i].note, notas[i].time);
+        }
+      }, time*1000);
+      time += notas[i].time;
+    }
+  }
+  </script>
+  <style>
+  #container {
+    margin-top: 50px;
+  }
+  #info {
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 22px;
+    width: 100%;
+  }
+  textarea {
+    display: block;
+    width: 80%;
+    height: 100px;
+    resize: none;
+    margin: 25px auto;
+    border-radius: 4px;
+  }
+  #button{
+    width: 70px;
+    height: 38px;
+    margin: auto;
+    display: block;
+    background: #7A5CBF;
+    border: 2px solid #6C2CFF;
+    border-radius: 5px;
+    transition: 0.6s;
+  }
+  #button:hover {
+    background: #31CDA9;
+    border: 2px solid darkslategray;
+  }
+  #button:focus {
+    outline: none;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Tone.html">Anterior</a></li>
+      <li><a href="Piano.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <p id="info">Enter the notes and the duration from each note with the following format:<br/>Note-Time<br/>Example: <br/>F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.5-F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.5-F4-0.2-X-0.05-A4-0.2-X-0.05-B4-0.2-X-0.05-E5-0.2-X-0.05-D5-0.5</p>
+    <textarea id="text" placeholder="Insert the molody notation here."></textarea>
+    <button id="button" onClick="pressMouse()">Submit</button>
+  </div>
+</body>
+</html>
