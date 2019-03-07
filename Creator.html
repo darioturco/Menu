@@ -2,6 +2,7 @@
 <head>
   <title>Creator</title>
   <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
   <script>
@@ -10,17 +11,26 @@
   var min = Infinity;
   var mut_col = 7.5;
   var mut_pos = 5;
-  var siz = 250;
-  var pob = 1000;
-  var mut = 5000;
+  var size = 250;
+  var pob = 100;
+  var mut = 350;
   var pob_cont = 0;
   var aux = 0;
   var pos = 0;
+  var carga = false;
   var on = false;
   var agr = true;
   var best = [], actual = [], copia = [], best_copia = [], list = [];
   function pressed_boton(){
-    on = true;
+    if(carga == true){
+      on = true;
+    }else{//activa una animacion para llamar la atencion con el canvas gris
+      let canvas_anim = document.getElementById("Canvas_1");
+      canvas_anim.classList.remove("anim");
+      setTimeout(() => {
+        canvas_anim.classList.add("anim");
+      }, 9);
+    }
   }
   function agregar(pun, cop){
     aux = new Poligon(cop.r,cop.g,cop.b,cop.a);
@@ -40,7 +50,7 @@
     var lis = [];
     var pol = new Poligon(random(255),random(255),random(255),random(255));
     for(var lados = random(3)+3;lados > 0;lados--){
-      pol.lis.push(new Point(random(siz),random(siz)));
+      pol.lis.push(new Point(random(size),random(size)));
     }
     return pol;
   }
@@ -57,24 +67,29 @@
   }
   var Sketck_1 = function(p){
     function drop_f(file){
-      p.image(p.createImg(file.data).hide(),0,0,siz,siz);
+      p.image(p.createImg(file.data).hide(),0,0,size,size);
       p.loadPixels();
       imagen = p.pixels;
+      carga = true;
     }
     p.setup = function() {
-      p.canv = p.createCanvas(siz,siz);
+      p.canv = p.createCanvas(size,size);
+      p.canv.parent(document.getElementById("canvas-container"));
       p.canv.id("Canvas_1");
       p.canv.drop(drop_f);
       p.background(150);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textSize(25);
+      p.text("Drag & drop",size/2,size/2);
     }
   }
   var Sketck_2 = function(p){//controla el canvas2 que va a mostrar
     p.i = 0;
     p.j = 0;
     p.setup = function() {//   el mejor resultado hasta el momento
-      p.canv = p.createCanvas(siz,siz);
-      p.canv.position(p.canv.position().x+siz/10,p.canv.position().y);
+      p.canv = p.createCanvas(size,size);
       p.canv.id("Canvas_2");
+      p.canv.parent(document.getElementById("canvas-container"));
       p.background(0);
       p.noStroke();
     }
@@ -118,16 +133,16 @@
       for(c=0;c<actual[num].lis.length;c++){
         actual[num].lis[c].x += randon()*mut_pos;////muta x
         if(actual[num].lis[c].x < 0) actual[num].lis[c].x = 0;
-        if(actual[num].lis[c].x > siz) actual[num].lis[c].x = siz;
+        if(actual[num].lis[c].x > size) actual[num].lis[c].x = size;
         actual[num].lis[c].y += randon()*mut_pos;//muta y
         if(actual[num].lis[c].y < 0) actual[num].lis[c].y = 0;
-        if(actual[num].lis[c].y > siz) actual[num].lis[c].y = siz;
+        if(actual[num].lis[c].y > size) actual[num].lis[c].y = size;
       }
     }
     p.setup = function() {//             controla el canvas2 que va a mostrar
-      p.canv = p.createCanvas(siz,siz);//el nuevo poligono random agregado
-      p.canv.position(p.canv.position().x+12*siz/10,p.canv.position().y);
+      p.canv = p.createCanvas(size,size);//el nuevo poligono random agregado
       p.canv.id("Canvas_3");
+      p.canv.parent(document.getElementById("canvas-container"));
       p.background(0);
       p.noStroke();
       p.frameRate(100);
@@ -194,11 +209,75 @@
   master_2 = new p5(Sketck_2);
   master_3 = new p5(Sketck_3);
   </script>
+  <style>
+  #container {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #container > * {
+    margin: 20px;
+  }
+  #text {
+    text-align: center;
+  }
+  #button{
+    width: 72px;
+    height: 38px;
+    margin: 20px auto;
+    display: block;
+    background: #7A5CBF;
+    border: 2px solid #6C2CFF;
+    border-radius: 5px;
+    transition: 0.6s;
+  }
+  #button:hover {
+    background: #31CDA9;
+    border: 2px solid darkslategray;
+  }
+  #button:focus {
+    outline: none;
+  }
+  #canvas-container {
+    margin: 20px 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  canvas {
+    margin: 12px;
+    border-radius: 12px;
+  }
+  .anim {
+    animation-name: scale;
+    animation-duration: 1s;
+  }
+  @keyframes scale {
+   from {
+     transform: scale(1);
+   }
+   50% {
+     transform: scale(1.12);
+   }
+   to {
+     transform: scale(1);
+   }
+  }
+  </style>
 </head>
 <body>
-  <center>
-    <a href="Menu.html">Volver al menu</a>
-    <button type="button" onclick="pressed_boton()">Start</button>
-  </center>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Eat.html">Anterior</a></li>
+      <li><a href="Static.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <h2 id="text">Drag and drop an image to the gray canvas and after press the button 'Start'</h2>
+    <button id="button" onclick="pressed_boton()">Start</button>
+    <div id="canvas-container"></div>
+  </div>
 </body>
 </html>

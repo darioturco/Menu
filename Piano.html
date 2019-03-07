@@ -5,13 +5,81 @@
   <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script src="../Tone.js"></script>
   <script>
-
+  const oct = 4;
+  const synth = new Tone.Synth({oscillator: {type: 'triangle'}}).toMaster()
+  const notes = ['C','C#','D','D#','E','E#','F','F#','G','G#','A','A#','B','B#'];
+  var white, black;
+  setTimeout(() => {
+    white = document.getElementById("white-notes");
+    black = document.getElementById("black-notes");
+    for(let i=0, aux ; i<oct*14 ; i++){
+      aux = document.createElement("div");
+      aux.id = notes[i%14] + Math.floor(i/14 + 3);
+      aux.classList.add("note");
+      if(i%2 == 0){
+        aux.classList.add("white");
+        white.appendChild(aux);
+      }else{
+        if(i%14 == 5 || i%14 == 13){
+          aux.classList.add("void");
+          aux.id = i;
+        }else{
+          aux.classList.add("black");
+        }
+        black.appendChild(aux);
+      }
+      aux.addEventListener('mousedown', (event) => {
+        synth.triggerAttackRelease(aux.id, 0.2);
+      });
+    }
+    resize();
+  }, 25);
+  function resize() {
+    let num = Math.floor(black.childNodes[1].offsetWidth / 2);
+    black.style.left = num + "px";
+  }
   </script>
   <style>
-
+  #piano {
+    height: 150px;
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+  }
+  #piano > * {
+    height: 125px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+  #black-notes {
+    bottom: 125px;
+    left: 20px;
+    height: 0px;
+  }
+  .note {
+    width: 100%;
+    border: 1px solid grey;
+  }
+  .white {
+    background: whitesmoke;
+    height: 125px;
+    width: 40px;
+  }
+  .black {
+    background: black;
+    height: 75px;
+    width: 40px;
+  }
+  .void {
+    background: transparent;
+    height: 0;
+    width: 40px;
+    border-color: transparent;
+  }
   </style>
 </head>
-<body>
+<body onresize="resize()">
   <header>
     <ul>
       <li><a href="Menu.html">Volver al menu</a></li>
@@ -19,6 +87,9 @@
       <li><a href="#">Siguiente</a></li>
     </ul>
   </header>
-
+  <div id="piano">
+    <div id="white-notes"></div>
+    <div id="black-notes"></div>
+  </div>
 </body>
 </html>
