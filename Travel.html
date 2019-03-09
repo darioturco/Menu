@@ -1,0 +1,164 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Travel</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+  const radius = 20;
+  var points = [];
+  var pun_1, pun_2, best, distance;
+  var on = false;
+  var continua = false;
+  function setup() {
+    createCanvas(650,400);
+    background(0);
+    best = Infinity;
+    input_ = document.getElementById("input");
+  }
+  function draw() {
+    background(0);
+    if(points.length > 1){
+      fill(250);
+      stroke(80,50,125);
+      strokeWeight(3);
+      for(let i=0 ; i<points.length-1 ; i++){
+        ellipse(points[i].x, points[i].y, radius);//draw all the points less the last
+        line(points[i].x, points[i].y, points[i+1].x, points[i+1].y);//draw the line between the ponits
+      }
+      ellipse(points[points.length-1].x, points[points.length-1].y, radius);
+      if(on){
+        pun_1 = Math.floor(random(0,points.length));
+        do{
+          pun_2 = Math.floor(random(0,points.length));
+        } while(pun_1 == pun_2);
+        swap(pun_1, pun_2);
+        distance = calc_distance();
+        if(distance <= best){
+          best = distance;
+        }else{
+          swap(pun_2, pun_1);
+        }
+      }
+    }
+  }
+  function swap(i, j){
+    let aux = points[i];
+    points[i] = points[j];
+    points[j] = aux;
+  }
+  function calc_distance(){
+    let sum = 0;
+    for(let i=0 ; i<points.length-1 ; i++){
+      sum += dist(points[i].x, points[i].y, points[i+1].x, points[i+1].y);
+    }
+    return sum;
+  }
+  function pressed_boton() {
+    let num = parseInt(input_.value);
+    if(!isNaN(num) && num > 1){
+      points = [];
+      for(let i=0 ; i<num ; i++){
+        points.push(createVector(random(0,650),random(0,400)));
+      }
+      best = calc_distance();
+      on = true;
+    }
+  }
+  </script>
+  <style>
+  body {
+    background-color: #bbb;
+  }
+  #container {
+    background: #A5D4C3;
+    padding: 10px;
+    margin: 30px 15%;
+    border: 1px solid #678A7D;
+    border-radius: 20px;
+  }
+  #button {
+    margin: 4px auto;
+    padding: 6px 8px;
+    display: block;
+    background: #44F0B8;
+    border: 3px solid #80D2B8;
+    border-radius: 10px;
+    transition: 1s;
+  }
+  #button:hover {
+    background: #F0447C;
+    border: 3px solid #D2809A;
+  }
+  #button:focus {
+    outline: none;
+  }
+  /* #container-radio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .selector {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+  }
+  .selector > * {
+    margin: 0;
+    padding: 0;
+  } */
+  #quantity {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 20px;
+    padding: 6px 28px;
+    margin: auto;
+  }
+  #quantity > * {
+    padding: 0;
+    height: 20px;
+  }
+  .space {
+    margin: 0 10px;
+  }
+  canvas {
+    display: block;
+    margin: auto;
+    border-radius: 10px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Piano.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <input id="button" type="button" value="Start" onclick="pressed_boton();" />
+    <!-- <div id="container-radio">
+      <span id="_1" class="selector">
+        <input class="space" type="radio" value="1" />
+        <p>Random Algorithm</p>
+      </span>
+      <span id="_2" class="selector">
+        <input class="space" type="radio" value="2" />
+        <p>Algorithm 2</p>
+      </span>
+      <span id="_3" class="selector">
+        <input class="space" type="radio" value="3" />
+        <p>Algorithm 3</p>
+      </span>
+    </div> -->
+    <span id="quantity">
+      <p class="space">Quantity of points: </p>
+      <input id="input" placeholder=" Quantity..."/>
+    </span>
+    <div id="container-canvas"></div>
+  </div>
+</body>
+</html>
