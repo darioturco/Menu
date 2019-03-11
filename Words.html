@@ -2,20 +2,21 @@
 <head>
   <title>Words</title>
   <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
-  <style>dev{padding: 25px; margin: 25px;}</style>
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
   <script>
-  var end = false;
-  var pob = 200;
-  var mut = 0.025;
-  var word = "Pienso luego existo si super la materia de IPC es super wiiiii";
+  const vel = 10;
+  const pob = 200;
+  const mut = 0.025;
   var objets = [], parent = new Array(40);
-  var parrafo = null;
+  var parrafo = null, text = null;
+  var word = "Enter a new text.";
+  var end = false, pass = false;
   function unit(word_){
     this.get_score = function(){
-      cont = 0;
-      for(c=0;c<this.word.length;c++){
+      let cont = 0;
+      for(let c=0;c<this.word.length;c++){
         if(this.word[c] == word[c]){
           cont++;
         }
@@ -26,24 +27,24 @@
     this.score = this.get_score(word_.length);
   }
   function random_char(){
-    c = Math.floor(Math.random()*59+63);
+    let c = Math.floor(Math.random()*59+63);
     if(c == 63){c = 32;}
     if(c == 64){c = 46;}
     return String.fromCharCode(c);
   }
   function random_word(tam){
-    var str = "";
-    for(j=0;j<tam;j++){
+    let str = "";
+    for(let j=0;j<tam;j++){
       str = str.concat(random_char());
     }
     return str;
   }
   function ordena(){
-    var aux = null;
-    var n = objets.length;
+    let aux = null;
+    let n = objets.length;
     do {
       aux = null;
-      for(i=1;i<n;i++) {
+      for(let i=1;i<n;i++) {
         if(objets[i-1].score > objets[i].score){
           aux = objets[i];
           objets[i] = objets[i-1];
@@ -52,21 +53,21 @@
       }
       n--;
     }while(aux != null);
-    for(i=0;i<parent.length;i++){
+    for(let i=0;i<parent.length;i++){
       parent[i] = objets[objets.length-1-i];
     }
     parrafo.html(parent[0].word);
   }
   function mezcla(){
-    for(i=0;i<parent.length;i+=2){
-      for(j=0;j<10;j++){
+    for(let i=0;i<parent.length;i+=2){
+      for(let j=0;j<10;j++){
         objets[(i)*(pob/parent.length)+j] = gen(parent[i],parent[i+1]);
       }
     }
   }
   function gen(par1,par2){
-    var str = "";
-    for(k=0;k<word.length;k++){
+    let str = "";
+    for(let k=0;k<word.length;k++){
       if(Math.random() <= mut){
         str = str.concat(random_char());
       }else{
@@ -85,34 +86,98 @@
     }
     return str;
   }
-  function setup() {
-    frameRate(10);
-    parrafo = createDiv(word);
-    parrafo.center();
-    parrafo.size(500,750);
-    parrafo.style('font-size','45px');
-    for(i=0;i<pob;i++){
+  function pressButton(ini) {//reset the program
+    if(ini == false){
+      if(text.value == ""){
+        console.log("Error. Enter a valid word.");
+        return;
+      }
+      word = text.value;
+    }
+    objets = [];
+    for(let i=0;i<pob;i++){
       objets.push(new unit(random_word(word.length)));
     }
-    ordena();
-    mezcla();
+    end = false;
+    pass = false;
+  }
+  function setup() {
+    frameRate(vel);
+    noCanvas();
+    parrafo = createDiv(word);
+    parrafo.id("output");
+    text = document.getElementById("text");
+    pressButton(true);
   }
   function draw() {
     if(end == false){
       ordena();
       mezcla();
     }else{
-      parrafo.html(word);
-      noLoop();
+      if(pass == false){
+        parrafo.html(word);
+        pass = true;
+      }
     }
   }
   </script>
+  <style>
+  #container {
+    background: #FFE4F6;
+    width: auto;
+    height: 100px;
+    padding: 0 8%;
+    margin: 5% 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 18px;
+  }
+  #container > * {
+    font-size: 1.2em;
+    height: 42%;
+    line-height: 50px;
+  }
+  #button {
+    height: 36%;
+    width: 90px;
+    line-height: inherit;
+    cursor: pointer;
+    background: #FB55C4;
+    border: 3px solid #A51074;
+    border-radius: 12px;
+    transition: 0.75s;
+  }
+  #button:hover {
+    background: #FB7ED2;
+  }
+  #button:focus {
+    outline: none;
+  }
+  #output {
+    height: 250px;
+    width: 50%;
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2.5em;
+    overflow: visible;
+  }
+  </style>
 </head>
 <body>
-  <center id="center">
-    <a href="Menu.html">Volver al menu</a>
-    <br>
-    <button type="button" onclick="pressed_boton()">Clear</button>
-  </center>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Maze.html">Anterior</a></li>
+      <li><a href="Celulas.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <p>Enter a text to find out: </p>
+    <input type="text" id="text"/>
+    <button id="button" onClick="pressButton(false);">Restart</button>
+  </div>
 </body>
 </html>
