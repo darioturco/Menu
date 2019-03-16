@@ -1,0 +1,122 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Encripter</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var text, output;
+  setTimeout(() => {
+    text = document.getElementById("text-input");
+    output = document.getElementById("output");
+  }, 25);
+  function decode(){
+    let input = text.value;
+    if(input == '') return;
+    if(input[0] != '!'){
+      console.warn("Code error.");
+      return;
+    }
+    let random = parseInt(input[1] + input[2]);
+    let out = "";
+    for(let i=4, aux ; i<input.length ; i++){
+      aux = input.charCodeAt(i);
+      if(random%2 == 0){
+        aux = String.fromCharCode(aux - random - i + 4);
+      }else{
+        aux = String.fromCharCode(aux - random*2 - i + 4);
+      }
+      out += aux;
+    }
+    output.innerHTML = out;
+  }
+  function encode(){
+    let input = text.value;
+    if(input == '') return;
+    let random = Math.floor(Math.random()*100);
+    let out = "";
+    if(random < 10){
+      out = "!0" + random + "_";
+    }else{
+      out = "!" + random + "_";
+    }
+    for(let i=0, aux ; i<input.length ; i++){
+      if(random%2 == 0){
+        aux = String.fromCharCode(input.charCodeAt(i) + random + i);
+      }else{
+        aux = String.fromCharCode(input.charCodeAt(i) + random*2 + i);
+      }
+      out += aux;
+    }
+    output.innerHTML = out;
+  }
+  function paste() {
+    text.value = output.innerHTML;
+  }
+  </script>
+  <style >
+  #container {
+    width: 80%;
+    height: 360px;
+    margin: auto;
+    margin-top: 50px;
+    background: #CD6EFF;
+    border: 3px solid #A978BA;
+    border-radius: 75px;
+    display: flex;
+    flex-direction: column;
+  }
+  #container > * {
+    width: 80%;
+    height: 80px;
+    margin: 12px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+  }
+  button {
+    margin: 0 26px;
+    height: 30px;
+    width: 80px;
+    cursor: pointer;
+    border-radius: 9px;
+    border-color: #E6BAFF #A200FF #A200FF #E6BAFF;
+    background: #C769FD;
+    box-shadow: 4px 3px 7px #555;
+    transition: 1s;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:hover{
+    background: #B750F3;
+    box-shadow: none;
+  }
+  textarea {
+    resize: vertical;
+    border-radius: 16px;
+  }
+  textarea:focus {
+    outline: none;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Outlay.html">Anterior</a></li>
+      <li><a href="Square.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <textarea id="text-input"></textarea>
+    <div>
+      <button id="encode" onclick="encode();">Encode</button>
+      <button id="decode" onclick="decode();">Decode</button>
+      <button id="paste" onclick="paste();">Paste</button>
+    </div>
+    <p id="output">->Output...<-</p>
+  </div>
+</body>
+</html>

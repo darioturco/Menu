@@ -1,0 +1,107 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Outlay</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var add, por, mul, out;
+  var price = 0;
+  setTimeout(() => {
+    add = document.getElementById("add-input");
+    por = document.getElementById("por-input");
+    mul = document.getElementById("mul-input");
+    out = document.getElementById("output-p");
+  }, 50);
+  function add_f(){
+    let aux = parseFloat(add.value);
+    let por_aux = parseFloat(por.value);
+    if(isNaN(aux)){
+      aux = 0;
+    }
+    if(isNaN(por_aux)){
+      por_aux = 0;
+    }
+    aux += por_aux/100*aux;
+    price += aux;
+    out.innerHTML = "Final: " + price;
+  }
+  function mul_f(){
+    let aux = parseFloat(mul.value);
+    if(isNaN(aux)){
+      aux = 1;
+    }
+    price *= aux;
+    out.innerHTML = "Final: " + price;
+  }
+  </script>
+  <style >
+  html, body {
+    height: 100%;
+  }
+  #container {
+    width: 80%;
+    height: 382px;
+    padding: 12px;
+    margin: auto;
+    margin-top: 50px;
+    background: #FFDDF0;
+    border-radius: 22px;
+  }
+  #container > .item {
+    height: 80px;
+    margin: 3% 16%;
+    background: #FF7DD5;
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+    border: 2px solid #BF5EA0;
+    border-radius: 10px;
+  }
+  .item > * {
+    box-sizing: border-box;
+    height: 22px;
+    margin: auto;
+    overflow-x: visible;
+  }
+  .item > button {
+    background: #9A4AF5;
+    border: 1px solid #4E258C;
+    transition: 1.2s;
+    cursor: pointer;
+  }
+  .item > button:hover {
+    background: #4E44F2;
+  }
+  .item > button:focus {
+    outline: none;
+  }
+  #por-input {
+    width: 15%;
+    margin: auto 5%;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Travel.html">Anterior</a></li>
+      <li><a href="Encripter.html">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <div class="item" id="add">
+      <button onClick="add_f();">Add</button>
+      <input id="add-input" type="number" /> <p>+</p>
+      <input id="por-input" type="number" value="0"/> <p>%</p>
+    </div>
+    <div class="item" id="mul">
+      <button onClick="mul_f();">Multiply</button>
+      <input id="mul-input" type="number" />
+    </div>
+    <div class="item" id="output">
+      <p id="output-p">Final: 0</p>
+    </div>
+  </div>
+</body>
+</html>

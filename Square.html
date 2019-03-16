@@ -1,0 +1,101 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Square</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  function resolve() {//ax² + bx + c = 0
+    let out = document.getElementById("output");
+    let a = parseFloat(document.getElementById("a").value);
+    let b = parseFloat(document.getElementById("b").value);
+    let c = parseFloat(document.getElementById("c").value);
+    if(isNaN(a)) a = 0;
+    if(isNaN(b)) b = 0;
+    if(isNaN(c)) c = 0;
+    if(a == 0){
+      out.innerHTML = "Isn't a cuadratic function.";
+    }else{
+      if(a != 1){
+        b /= a;
+        c /= a;
+        a = 1;
+      }
+      let term = b/2;
+      c -= (term*term);
+      if(term >= 0){
+        a = "(x + ";
+      }else{
+        a = "(x - ";
+      }
+      if(c >= 0){
+        b = ")² + ";
+      }else{
+        b = ")² - ";
+      }
+      output.innerHTML = a + Math.abs(term) + b + Math.abs(c) + " = 0"
+    }
+  }
+  </script>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #container {
+    width: 72%;
+    height: 200px;
+    padding-top: 30px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  #container > *{
+    margin: auto;
+  }
+  #equation {
+    margin: auto;
+  }
+  input {
+    width: 38px;
+    border: none;
+    border-bottom: 1px solid gray;
+  }
+  button {
+    margin: auto;
+    height: 52px;
+    width: 130px;
+    cursor: pointer;
+    border-radius: 9px;
+    border-color: #E6BAFF #A200FF #A200FF #E6BAFF;
+    background: #C769FD;
+    box-shadow: 1px 3px 5px #555;
+    transition: 1s;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:hover{
+    background: #B750F3;
+    box-shadow: none;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Encripter.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <div id="equation">
+      <input id="a" type="number"/>x² + <input id="b" type="number"/>x + <input id="c" type="number"/> = 0
+    </div>
+    <button onclick="resolve();">Completing Square</button>
+    <p id="output">Output</p>
+  </div>
+</body>
+</html>
