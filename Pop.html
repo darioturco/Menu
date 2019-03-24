@@ -1,0 +1,296 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Pop</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script>
+  function apreta(bot){
+    let id_ = parseInt(bot.id);
+    switch (id_) {
+    case 0:
+      Swal.fire('First Pop-Up!!!');
+      break;
+    case 1:
+      Swal.fire({
+        title: "Chose a Answer, yes or no?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then(res => {
+        if(res.hasOwnProperty("dismiss")){
+          console.log(false);
+        }else{
+          console.log(true);
+        }
+      });
+      break;
+    case 2:
+      Swal.fire({
+        type: "info",
+        title: "Enter a funny text...",
+        input: "text",
+        showCancelButton: true
+      }).then(res => {
+        if(res.value){
+          console.log(res.value);
+        }
+      });
+      break;
+    case 3:
+      Swal.fire({
+        title: "Select your option...",
+        showConfirmButton: false,
+        html:
+          "<button class='button-pop' id='op_1'>Option 1</button><br />"+
+          "<button class='button-pop' id='op_2'>Option 2</button><br />"+
+          "<button class='button-pop' id='op_3'>Option 3</button>",
+        onBeforeOpen: () => {
+          let bt = document.getElementsByClassName("button-pop");
+          bt[0].addEventListener("click", () => {
+            Swal.fire({
+              title: "Option 1",
+              text: "You chose the 1º option.",
+              type: "warning"
+            });
+          });
+          bt[1].addEventListener("click", () => {
+            Swal.fire({
+              title: "Option 2",
+              text: "You chose the 2º option.",
+              type: "info"
+            });
+          });
+          bt[2].addEventListener("click", () => {
+            Swal.fire({
+              title: "Option 3",
+              text: "You chose the 3º option.",
+              type: "success"
+            });
+          });
+        }
+      });
+      break;
+    case 4:
+      Swal.fire({
+        title: "Checkboxs",
+        text: "Choose your options...",
+        type: "info",
+        confirmButtonText: "Accept",
+        html:
+          "<input class='check-pop' type='checkbox' /> Option 1<br />"+
+          "<input class='check-pop' type='checkbox' /> Option 2<br />"+
+          "<input class='check-pop' type='checkbox' /> Option 3",
+        preConfirm: () => {
+          let list = document.getElementsByClassName('check-pop');
+          return [list[0].checked,list[1].checked,list[2].checked];
+        }
+      }).then(res => {
+        console.log(res.value);
+        Swal.fire({
+          title: "Your options were:",
+          text: res.value[0] + " " + res.value[1] + " " + res.value[2],
+          type: "success"
+        });
+      });
+      break;
+    case 5:
+      Swal.mixin({
+        title: "Complete all the steps.",
+        confirmButtonText: "Next ->",
+        progressSteps: ['1','2','3','4']
+      }).queue([{
+        text: "User: ",
+        type: "info",
+        input: "text"
+      },{
+        text: "Password: ",
+        input: "password"
+      },{
+        text: "Select a option: ",
+        input: "select",
+        inputOptions: {
+          'Option 1': 'Option 1',
+          'Option 2': 'Option 2',
+          'Option 3': 'Option 3',
+          'Option 4': 'Option 4',
+          'Option 5': 'Option 5'
+        }
+      },{
+        text: "Accept the term:",
+        input: "checkbox",
+        inputPlaceholder: "I agree with the terms and conditions",
+        confirmButtonText: "Finish"
+      }]).then(res => {
+        if(res.value[3] == 1){
+          Swal.fire({
+            title: "Wellcome!!!",
+            text: "Wellcome " + res.value[0] + ", you chose the " + res.value[2] + ".",
+            type: "success"
+          });
+        }else{
+          Swal.fire({
+            title: "Don't accepted.",
+            type: "error",
+            confirmButtonText: "Try again"
+          });
+        }
+      });
+      break;
+    case 6:
+      Swal.fire({
+        title: "This window will be closed automatically.",
+        timer: 5000,
+        html: "<p id='pop-conter'>In 5 seconds</p>",
+        showConfirmButton: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          const pop_c = document.getElementById('pop-conter');
+          let timer = 5000;
+          time_f = setInterval(() => {
+            timer -= 100;
+            pop_c.innerHTML = "In " + timer/1000 + " seconds"
+          }, 100);
+        },
+        onClose: () => {
+          clearInterval(time_f);
+        }
+      });
+      break;
+    case 7:
+      let toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2500
+      });
+      toast.fire({
+        title: 'Toast message.',
+        type: 'info'
+      });
+      break;
+    }
+  }
+  </script>
+  <style>
+
+  #chain {
+    width: 65%;
+    height: 500px;
+    margin: auto;
+    margin-top: 25px;
+    background: #C0FDED;
+    overflow-y: scroll;
+    border-radius: 35px;
+  }
+  .eslabon {
+    width: 68%;
+    height: 120px;
+    margin: 20px auto;
+    background: #9AFED5;
+    border-radius: 30px;
+    border: 2px solid #15E691;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .duo {
+    width: 25%;
+    height: 80%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .duo > button {
+    width: 70px;
+    height: 44px;
+    margin: auto;
+    border-radius: 15px;
+    border-color: #E6BAFF #A200FF #A200FF #E6BAFF;
+    background: #C769FD;
+    box-shadow: none;
+    transition: 1s;
+    cursor: pointer;
+  }
+  .duo > button:focus {
+    outline: none;
+  }
+  .duo > button:active{
+      border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
+      box-shadow: -1px -1px 5px #999;
+  }
+  .duo > button:hover{
+    background: #B750F3;
+    box-shadow: 4px 3px 9px #555;
+  }
+  .label {
+    text-shadow: 2px 1px 7px grey;
+    font-size: 1.25em;
+  }
+  .button-pop{
+    margin: 10px;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #22DCCE;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #167D90;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0B696C;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Square.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="titulo"><center>Chose a Pop-Up</center></h1>
+  <div id="chain">
+    <div class="eslabon">
+      <div class="duo"><button id="0" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Hello Pop</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="1" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Question</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="2" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Input</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="3" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Answer</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="4" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Checkbox</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="5" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Queue</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="6" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Time Exit</p></div>
+    </div>
+    <div class="eslabon">
+      <div class="duo"><button id="7" class="boton" onClick="apreta(this)">Play</button></div>
+      <div class="duo"><p class="label">Toast</p></div>
+    </div>
+  </div>
+</body>
+</html>
