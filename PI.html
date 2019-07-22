@@ -3,11 +3,12 @@
   <title>PI</title>
   <script src="../p5.js"></script>
   <script src="../p5.dom.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
   <link rel="stylesheet" type="text/css" href="Style.css"/>
   <script>
   var cont = 0, cont_in = 0;
   var normas = [];
-  var par;
+  var par, canv;
   function setup() {
     canv = createCanvas(windowHeight-140,windowHeight-140);
     canv.position((windowWidth-canv.width)/2,120);

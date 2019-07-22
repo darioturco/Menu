@@ -1,0 +1,121 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Primitiva</title>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script>
+  var canv, answer;
+  var size_ = 400;
+  var angulo = 0;
+  function setup() {
+    answer = document.getElementById("answer");
+    canv = createCanvas(size_,size_);
+    canv.parent(document.getElementById("canvas"));
+    translate(size_/2, size_/2);
+    limpia();
+    scale(1,-1);
+    dibuja(2);
+  }
+  function limpia() {
+    background(0);
+    strokeWeight(1);
+    fill(0);
+    stroke(255);
+    ellipse(0,0,size_,size_);
+    fill(255);
+    ellipse(0,0,10,10);
+    strokeWeight(3);
+  }
+  function dibuja(n){
+    let x = 0;
+    let y = 0;
+    for(let i=0, obj; i<n ; i++){
+      push();
+      obj = calcula_catetos(2*Math.PI*i/n);
+      if(son_coprimos(n, i)){//si son primitivas
+        stroke(233,233,50);
+        x += obj.x;
+        y += obj.y;
+      }
+      line(0,0,obj.x*size_/2,obj.y*size_/2);
+      pop();
+    }
+    answer.innerHTML = "Suma de primitivas de Gn = (" + parseFloat(x.toFixed(4)) + ", " + parseFloat(y.toFixed(4)) + "i)";
+  }
+  function son_coprimos(a, b){
+    return mcd(a,b) == 1;
+  }
+  function mcd(a, b){
+	   if (b == 0){
+		     return a;
+	   }
+	   return mcd(b, a%b);
+  }
+  function calcula_catetos(angulo){
+    return {
+      x: (parseFloat(Math.cos(angulo).toFixed(12))),
+      y: (parseFloat(Math.sin(angulo).toFixed(12)))
+    }
+  }
+  function cambio(n_input){
+    if(n_input.value > 0){
+      limpia();
+      dibuja(parseInt(n_input.value));
+    } else {
+      // Avisa de que n es natural
+    }
+  }
+  </script>
+  <style>
+  #conteiner {
+    height: 520px;
+    width: 75%;
+    margin: auto;
+    background: #7FFFD4;
+    border-radius: 50px;
+  }
+  #n_container {
+    width: 100px;
+    padding-top: 16px;
+    margin: auto;
+  }
+  #n {
+    width: 60px;
+  }
+  #answer_container {
+    width: 250px;
+    margin: auto;
+    text-align: center;
+  }
+  #answer_container > h4 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  #canvas {
+    width: 400px;
+    height: 400px;
+    padding: 5px;
+    margin: auto;
+    background: black;
+    border-radius: 12px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Pop.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <h1 id="titulo"><center>Raices primitivas de la unidad</center></h1>
+  <div id="conteiner">
+    <div id="n_container"/>n = <input id="n" type="Number" placeholder="2" min="1" max="200" onchange="cambio(this)"/></div>
+    <div id="answer_container"/><h4 id="answer">Suma de primitivas de Gn = (1,0i)</h4></div>
+    <div id="canvas"></div>
+  </div>
+</body>
+</html>

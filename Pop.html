@@ -33,9 +33,7 @@
         input: "text",
         showCancelButton: true
       }).then(res => {
-        if(res.value){
-          console.log(res.value);
-        }
+        console.log(res.value);
       });
       break;
     case 3:
@@ -43,9 +41,9 @@
         title: "Select your option...",
         showConfirmButton: false,
         html:
-          "<button class='button-pop' id='op_1'>Option 1</button><br />"+
-          "<button class='button-pop' id='op_2'>Option 2</button><br />"+
-          "<button class='button-pop' id='op_3'>Option 3</button>",
+          "<button class='button-pop boton' id='op_1'>Option 1</button><br />"+
+          "<button class='button-pop boton' id='op_2'>Option 2</button><br />"+
+          "<button class='button-pop boton' id='op_3'>Option 3</button>",
         onBeforeOpen: () => {
           let bt = document.getElementsByClassName("button-pop");
           bt[0].addEventListener("click", () => {
@@ -87,12 +85,13 @@
           return [list[0].checked,list[1].checked,list[2].checked];
         }
       }).then(res => {
-        console.log(res.value);
-        Swal.fire({
-          title: "Your options were:",
-          text: res.value[0] + " " + res.value[1] + " " + res.value[2],
-          type: "success"
-        });
+        if(res.value){
+          Swal.fire({
+            title: "Your options were:",
+            text: res.value[0] + " " + res.value[1] + " " + res.value[2],
+            type: "success"
+          });
+        }
       });
       break;
     case 5:
@@ -123,18 +122,20 @@
         inputPlaceholder: "I agree with the terms and conditions",
         confirmButtonText: "Finish"
       }]).then(res => {
-        if(res.value[3] == 1){
-          Swal.fire({
-            title: "Wellcome!!!",
-            text: "Wellcome " + res.value[0] + ", you chose the " + res.value[2] + ".",
-            type: "success"
-          });
-        }else{
-          Swal.fire({
-            title: "Don't accepted.",
-            type: "error",
-            confirmButtonText: "Try again"
-          });
+        if(res.value && res.value.length >= 4){
+          if(res.value[3] == 1){
+            Swal.fire({
+              title: "Wellcome!!!",
+              text: "Wellcome " + res.value[0] + ", you chose the " + res.value[2] + ".",
+              type: "success"
+            });
+          }else{
+            Swal.fire({
+              title: "Don't accepted.",
+              type: "error",
+              confirmButtonText: "Try again"
+            });
+          }
         }
       });
       break;
@@ -175,7 +176,6 @@
   }
   </script>
   <style>
-
   #chain {
     width: 65%;
     height: 500px;
@@ -204,7 +204,7 @@
     align-items: center;
     justify-content: center;
   }
-  .duo > button {
+  .boton {
     width: 70px;
     height: 44px;
     margin: auto;
@@ -215,14 +215,14 @@
     transition: 1s;
     cursor: pointer;
   }
-  .duo > button:focus {
+  .boton:focus {
     outline: none;
   }
-  .duo > button:active{
+  .boton:active{
       border-color: #A200FF #E6BAFF #E6BAFF #A200FF;
       box-shadow: -1px -1px 5px #999;
   }
-  .duo > button:hover{
+  .boton:hover{
     background: #B750F3;
     box-shadow: 4px 3px 9px #555;
   }
@@ -254,7 +254,7 @@
     <ul>
       <li><a href="Menu.html">Volver al menu</a></li>
       <li><a href="Square.html">Anterior</a></li>
-      <li><a href="#">Siguiente</a></li>
+      <li><a href="Primitiva.html">Siguiente</a></li>
     </ul>
   </header>
   <h1 id="titulo"><center>Chose a Pop-Up</center></h1>
