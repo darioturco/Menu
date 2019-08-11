@@ -1,0 +1,218 @@
+<!DOCTYPE html><html>
+<head>
+  <title>Integer</title>
+  <link rel="shortcut icon" type="image/x-icon" href="Favicon/C.ico" />
+  <link rel="stylesheet" type="text/css" href="Style.css"/>
+  <script src="../p5.js"></script>
+  <script src="../p5.dom.js"></script>
+  <script>
+    var num, output;
+    setTimeout(() => {
+      num = document.getElementById("input");
+      output = document.getElementsByClassName("p_text");
+    }, 50);
+    function boton(){
+      let number = parseInt(num.value);
+      let divisors = find_divisors(Math.abs(number));
+      let sumpro = sumprof(divisors);
+      output[0].innerHTML = "Number = " + number;
+      output[1].innerHTML = "Sign: " + sign(number);
+      output[2].innerHTML = "Divisors: " + divisorsToString(divisors);
+      output[3].innerHTML = "Factorization = " + factorazation(Math.abs(number));
+      output[4].innerHTML = "Count of +divisors = " + cantDivisors(divisors);
+      output[5].innerHTML = "Sum of +divisors = " + sumpro.sum;
+      output[6].innerHTML = "Product of +divisors = " + sumpro.pro;
+      output[7].innerHTML = "Is a prime: " + (divisors.length == 2);
+      output[8].innerHTML = "Is a fibonacci: " + esFibonacci(number);
+      output[9].innerHTML = "Is a perfect: " + (sumpro.sum/2 == number);
+      output[10].innerHTML = "Square = " + number*number;
+      output[11].innerHTML = "Cube = " + number*number*number;
+      output[12].innerHTML = "Square root = " + Math.sqrt(number);
+    }
+    function sign(n){
+      if(n == 0){
+        return "Cero";
+      }else{
+        if(n > 0){
+          return "Positive";
+        }else{
+          return "Negative";
+        }
+      }
+    }
+    function find_divisors(n){
+      if(n == 0){
+        return "All numbers";
+      }
+      let listD = [1];
+      let offset = (n%2 == 0) ? 0 : 1;
+      for(let i=offset+2 ; i<=n/2 ; i += 1+offset){
+        if(n%i == 0){
+          listD.push(i);
+        }
+      }
+      if(n != 1){
+        listD.push(n);
+      }
+      return listD;
+    }
+    function divisorsToString(listD){
+      if(listD[0] == "A"){
+        return listD;
+      }
+      let cadena = "±";
+      for(let i=0 ; i<listD.length ; i++){
+        cadena += listD[i] + ", ";
+      }
+      return cadena.slice(0, cadena.length-2);
+    }
+    function factorazation(n){
+      let result = "";
+      if(n == 0 || n == 1){
+        result = n;
+      }else{
+        for(let i=2 ; i<=n ; i+=1){
+          if(n%i == 0){
+            n = n/i;
+            result += i + "*";
+            i -= 1;
+          }
+        }
+        result = result.slice(0, result.length-1);
+      }
+      return result;
+    }
+    function cantDivisors(listD){
+      if(listD[0] == "A"){
+        return "Infinite";
+      }else{
+        return listD.length;
+      }
+    }
+    function sumprof(listD){
+      let result = {sum: 0, pro: 1};
+      if(listD[0] == "A"){
+        result = {sum: "Infinite", pro: "Infinite"};
+      }else{
+        for(let i=0 ; i<listD.length ; i++){
+          result.sum += listD[i];
+          result.pro *= listD[i];
+        }
+      }
+      return result;
+    }
+    function esFibonacci(n){
+      if(n <= 0){
+        return false;
+      }
+      let fib1 = 1;
+      let fib2 = 1;
+      let aux = 0;
+      do {
+        if(n == fib2){
+          return true;
+        }
+        aux = fib2;
+        fib2 += fib1;
+        fib1 = aux;
+      } while (n >= fib2)
+      return false;
+    }
+  </script>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  #container {
+    height: 500px;
+    width: 72%;
+    margin: 26px auto;
+    padding: 24px 50px;
+    background: #F3B7FF;
+    border-radius: 40px;
+  }
+  #container > div {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+  }
+  #entrada {
+    height: 22%;
+    width: 90%;
+    padding: 0px 60px;
+    margin: 3% auto;
+    background: #C65BFC;
+    border-radius: 28px;
+  }
+  #salida {
+    height: 65%;
+    width: 75%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .p_text {
+    margin: 0;
+    height: 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.3em;
+    overflow-x: overlay;
+  }
+  #input {
+    height: 24px;
+    width: auto;
+    margin: auto;
+  }
+  #button {
+    height: 32px;
+    width: 50px;
+    margin: auto;
+    background: #7FFFD4;
+    border: 1px solid #4E258C;
+    border-radius: 6px;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  #button:hover {
+    background: #F3B7FF;
+    color: #284F42;
+  }
+  #button:focus {
+    outline: none;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="Menu.html">Volver al menu</a></li>
+      <li><a href="Primitiva.html">Anterior</a></li>
+      <li><a href="#">Siguiente</a></li>
+    </ul>
+  </header>
+  <div id="container">
+    <div id="entrada">
+      <input id="input" type="number" value="" placeholder="Enter a integer">
+      <input id="button" type="button" value="Enter" onclick="boton();">
+    </div>
+    <div id="salida">
+      <p class="p_text">Number = </p>
+      <p class="p_text">Sign: </p>
+      <p class="p_text">Divisors: </p>
+      <p class="p_text">Factorization = </p>
+      <p class="p_text">Count of +divisors = </p>
+      <p class="p_text">Sum of +divisors = </p>
+      <p class="p_text">Product of +divisors = </p>
+      <p class="p_text">Is a prime: </p>
+      <p class="p_text">Is a fibonacci: </p>
+      <p class="p_text">Is a perfect: </p>
+      <p class="p_text">Square = </p>
+      <p class="p_text">Cube = </p>
+      <p class="p_text">Square root = </p>
+    </div>
+  </div>
+</body>
+</html>
